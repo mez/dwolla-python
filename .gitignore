@@ -1,0 +1,13 @@
+*.pyc
+*.local
+.idea
+.Python
+bin/
+include/
+lib/
+.DS_Store
+dist/
+dwolla.egg-info/
+.pypirc
+examples/_keys.py
+examples/_keys.pyc
