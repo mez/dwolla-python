@@ -565,7 +565,7 @@ class DwollaUser(object):
             'routing_number': routing_number,
             'account_number': account_number,
             'account_type': account_type,
-            'account_name': account_name
+            'name': account_name
         }
 
         return self.post('fundingsources/', params)
