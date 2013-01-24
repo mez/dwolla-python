@@ -3,7 +3,7 @@
 
 ## Version
 
-1.4.1
+1.4.2
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -83,6 +83,11 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.4.2
+
+* Fixed wrong parameter name in add_funding_source() (Thanks @Louis11)
+* Fixed typos in example files
 
 1.4.1
 

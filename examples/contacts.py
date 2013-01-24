@@ -5,7 +5,7 @@ from dwolla import DwollaClientApp, DwollaUser
 import _keys
 
 # Instantiate a new Dwolla User client
-# And, Sseed a previously generated access token
+# And, Seed a previously generated access token
 DwollaUser = DwollaUser(_keys.token)
 
 '''
