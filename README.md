@@ -3,7 +3,7 @@
 
 ## Version
 
-1.4.2
+1.4.4
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -83,6 +83,14 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.4.4
+
+* Add support for host override
+
+1.4.3
+
+* Fixed docs for the transaction/listings() delimiter (Thanks, @klobyone)
 
 1.4.2
 

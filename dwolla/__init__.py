@@ -12,7 +12,7 @@ import json
 import urllib
 import requests
 import datetime
-
+import os
 
 class DwollaGateway(object):
     def __init__(self, client_id, client_secret, redirect_uri):
@@ -21,6 +21,7 @@ class DwollaGateway(object):
         self.redirect_uri = redirect_uri
         self.session = []
         self.mode = 'LIVE'
+        self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/')
 
     def set_mode(self, mode):
         if mode not in ['LIVE', 'TEST']:
@@ -110,9 +111,10 @@ class DwollaClientApp(object):
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.api_url = "https://www.dwolla.com/oauth/rest/"
-        self.auth_url = "https://www.dwolla.com/oauth/v2/authenticate"
-        self.token_url = "https://www.dwolla.com/oauth/v2/token"
+        self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/')
+        self.api_url = self.host + "oauth/rest/"
+        self.auth_url = self.host + "oauth/v2/authenticate"
+        self.token_url = self.host + "oauth/v2/token"
 
     def parse_response(self, resp):
         '''
@@ -318,7 +320,8 @@ class DwollaUser(object):
     '''
 
     def __init__(self, access_token):
-        self.api_url = "https://www.dwolla.com/oauth/rest"
+        self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/')
+        self.api_url = self.host + "oauth/rest"
         self.access_token = access_token
 
     def parse_response(self, resp):
@@ -394,7 +397,7 @@ class DwollaUser(object):
             `datetime.datetime` object.
 
         :param types: (optional) Transaction types to retrieve.
-            Must be delimited by a '|'. Options are money_sent, money_received,
+            Must be delimited by a ','. Options are money_sent, money_received,
             deposit, withdrawal, and fee. Defaults to include all
             transaction types.
 
