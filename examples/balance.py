@@ -1,6 +1,3 @@
-import sys
-sys.path.append('../')
-
 # Include the Dwolla REST Client
 from dwolla import DwollaClientApp, DwollaUser
 

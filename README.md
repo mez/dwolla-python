@@ -3,7 +3,7 @@
 
 ## Version
 
-1.4.4
+1.4.5
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -83,6 +83,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.4.5
+
+* Add support for SSL verification override
 
 1.4.4
 

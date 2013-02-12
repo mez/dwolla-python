@@ -12,7 +12,7 @@ DwollaUser = DwollaUser(_keys.token)
     EXAMPLE 1: 
       Send money ($1.00) to a Dwolla ID 
 '''
-transaction = DwollaUser.send_funds(1.00, '812-626-8794', _keys.pin)
+transaction = DwollaUser.send_funds(0.01, '812-626-8794', _keys.pin)
 print(transaction)
 
 
