@@ -326,8 +326,6 @@ class DwollaUser(object):
         self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/' if self.verify_ssl else 'http://www.dwolla.com/')
         self.api_url = self.host + "oauth/rest"
         self.access_token = access_token
-        print self.verify_ssl
-        print self.host
 
     def parse_response(self, resp):
         resp = json.loads(resp.content)
@@ -357,11 +355,11 @@ class DwollaUser(object):
 
     def get_account_info(self):
         '''returs the account info for this user account'''
-        return self.get("users")
+        return self.get("users/")
 
     def get_balance(self):
         '''returns the balance for this user account'''
-        return self.get("balance")
+        return self.get("balance/")
 
     def get_contacts(self, search=None, types=None, limit=None):
         '''
@@ -382,7 +380,7 @@ class DwollaUser(object):
             params['types'] = types
         if limit:
             params['limit'] = limit
-        return self.get("contacts", **params)
+        return self.get("contacts/", **params)
 
     def get_transaction(self, transaction_id):
         '''
@@ -422,7 +420,7 @@ class DwollaUser(object):
             params['limit'] = limit
         if skip:
             params['skip'] = skip
-        return self.get("transactions", **params)
+        return self.get("transactions/", **params)
 
     def get_transaction_stats(self, types=None, start_date="", end_date=""):
         '''
@@ -557,7 +555,7 @@ class DwollaUser(object):
 
     def get_funding_sources(self):
         ''' Returns a list of verified funding sources for the user '''
-        return self.get('fundingsources')
+        return self.get('fundingsources/')
 
     def get_funding_source(self, source_id):
         '''

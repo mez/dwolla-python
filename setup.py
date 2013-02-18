@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='dwolla',
-      version='1.4.5',
+      version='1.4.7',
       description='Dwolla Client API',
       author='Thomas Hansen',
       author_email='thomas.hansen@gmail.com',
