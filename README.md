@@ -3,7 +3,7 @@
 
 ## Version
 
-1.4.7
+1.4.8
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -83,6 +83,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.4.8
+
+* Added Guest Checkout flag to get_gateway_URL() (Thanks, @pegler)
 
 1.4.7
 
