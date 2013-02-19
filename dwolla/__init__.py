@@ -45,7 +45,7 @@ class DwollaGateway(object):
         self.session.append(product)
         return True
         
-    def get_gateway_URL(self, destination_id, order_id = None, discount = 0, shipping = 0, tax = 0, notes = None, callback = None):
+    def get_gateway_URL(self, destination_id, order_id = None, discount = 0, shipping = 0, tax = 0, notes = None, callback = None, allowFundingSources = False):
         # Calcualte subtotal
         subtotal = 0
         for product in self.session:
@@ -75,6 +75,8 @@ class DwollaGateway(object):
             request['Callback'] = callback
         if notes:
             request['PurchaseOrder']['Notes'] = notes
+        if allowFundingSources:
+            request['AllowFundingSources'] = 'true'
             
         # Send off the request
         headers = {'Content-Type': 'application/json'}
