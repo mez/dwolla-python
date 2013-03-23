@@ -497,7 +497,7 @@ class DwollaUser(object):
 
         return self.post('transactions/send', params)
 
-    def request_funds(self, amount, source, pin,
+    def request_funds(self, amount, source,
             notes=None, facil_amount=None, source_type=None):
         '''
         Request funds from another Dwolla user on behalf of the user.
@@ -507,8 +507,6 @@ class DwollaUser(object):
         :param source: Identification of the user to request funds from.
             Must be the Dwolla identifier, Facebook identifier, Twitter
             identifier, phone number, or email address.
-
-        :param pin: User's pin number to verify transaction.
 
         :param notes: (optional )Note to attach to the transaction. Limited to
             250 characters.
@@ -523,7 +521,7 @@ class DwollaUser(object):
             "Email", or "Phone".
 
         '''
-        params = {'pin': pin, 'sourceId': source, 'amount': amount}
+        params = {'sourceId': source, 'amount': amount}
         if notes:
             params['notes'] = notes
         if facil_amount:

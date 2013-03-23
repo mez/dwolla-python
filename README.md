@@ -3,7 +3,7 @@
 
 ## Version
 
-1.4.8
+1.4.9
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -83,6 +83,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.4.9
+
+* Remove PIN requirement on def request()
 
 1.4.8
 
