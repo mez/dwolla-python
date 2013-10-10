@@ -22,12 +22,15 @@ class DwollaGateway(object):
         self.session = []
         self.mode = 'LIVE'
         self.verify_ssl = False if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else True
-        self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/' if self.verify_ssl else 'http://www.dwolla.com/')
+        self.debug = True if (os.getenv('DWOLLA_DEBUG') == 'True') else False
+        self.sandbox = True if (os.getenv('DWOLLA_SANDBOX') == 'True') else False
+        self.protocol = 'http://' if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else 'https://'
+        self.host = os.getenv('DWOLLA_API_HOST', (self.protocol + 'uat.dwolla.com/') if self.sandbox else (self.protocol + 'www.dwolla.com/'))
 
     def set_mode(self, mode):
         if mode not in ['LIVE', 'TEST']:
             return False
-        
+
         self.mode = mode
         return True
 
@@ -44,13 +47,13 @@ class DwollaGateway(object):
 
         self.session.append(product)
         return True
-        
+
     def get_gateway_URL(self, destination_id, order_id = None, discount = 0, shipping = 0, tax = 0, notes = None, callback = None, allowFundingSources = False):
         # Calcualte subtotal
         subtotal = 0
         for product in self.session:
             subtotal += float(product['Price']) * float(product['Quantity'])
-            
+
         # Calculate grand total
         total = subtotal - discount + shipping + tax
 
@@ -77,7 +80,7 @@ class DwollaGateway(object):
             request['PurchaseOrder']['Notes'] = notes
         if allowFundingSources:
             request['AllowFundingSources'] = 'true'
-            
+
         # Send off the request
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(request)
@@ -100,7 +103,7 @@ class DwollaGateway(object):
         hash = hmac.new(self.client_secret, raw, hashlib.sha1).hexdigest()
 
         return True if (hash == signature) else False
-        
+
 
 class DwollaAPIError(Exception):
     '''Raised if the dwolla api returns an error.'''
@@ -479,7 +482,7 @@ class DwollaUser(object):
         :param dest_type: (optional) Type of destination user.
             Defaults to "Dwolla". Can be "Dwolla", "Facebook", "Twitter",
             "Email", or "Phone".
-            
+
         :param funds_source: (optional) The Dwolla ID of the funding
            source to be used. Defaults to the user's Dwolla balance.
         '''
@@ -529,7 +532,7 @@ class DwollaUser(object):
         if source_type:
             params['sourceType'] = source_type
         return self.post('requests/', params)
-        
+
     def fulfill_request(self, request_id, pin,
             amount=None, notes=None, funds_source=None, assume_cost=None):
         params = {'pin': pin, 'amount': amount}
@@ -540,16 +543,16 @@ class DwollaUser(object):
         if assume_cost:
             params['assumeCosts'] = assume_cost
         if funds_source:
-            params['fundsSource'] = funds_source      
+            params['fundsSource'] = funds_source
 
         return self.post('requests/%s/fulfill' % request_id, params)
-      
+
     def cancel_request(self, request_id):
         return self.post('requests/%s/cancel' % request_id, {})
-    
+
     def get_request(self, request_id):
         return self.get('requests/%s' % request_id)
-      
+
     def get_pending_requests(self):
         return self.get('requests/')
 
@@ -563,9 +566,9 @@ class DwollaUser(object):
 
         :param source_id: Funding source identifier of the funding source
             being requested.
-        '''               
+        '''
         return self.get("fundingsources/%s" % source_id)
-        
+
     def add_funding_source(self, routing_number, account_number, account_type, account_name):
         params = {
             'routing_number': routing_number,

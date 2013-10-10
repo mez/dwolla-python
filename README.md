@@ -3,7 +3,7 @@
 
 ## Version
 
-1.4.9
+1.5.0
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -38,6 +38,13 @@ This repo includes various usage examples, including:
 * Registering a new Dwolla user account [registerUser.py]
 * Handling money requests [request.py]
 
+## Environment Variables
+
+* `DWOLLA_VERIFY_SSL` (optional; True/False) Should we verify Dwolla's SSL?
+* `DWOLLA_DEBUG` (optional; True/False) Enable verbose debug?
+* `DWOLLA_SANDBOX` (optional; True/False) Use Dwolla's UAT env?
+* `DWOLLA_API_HOST` (optional; String/URL) A custom API host URL; defaults to https://www.dwolla.com/
+
 ## Methods
 
 DwollaClientApp class:
@@ -54,28 +61,28 @@ DwollaUser class:
     get_account_info(account_id)            ==> (dict) the user entity associated with the token
     get_nearby_users(lat, lon)
     get_contacts([search, types, limit])    ==> (array) list of contacts matching the search criteria
-    
+
     get_transaction(transaction_id)         ==> (dict) transaction details
     get_transaction_list([since, types, limit, skip])       ==> (array) a list of recent transactions matching the search criteria
     get_transaction_stats([types, start_date, end_date])    ==> (dict) statistics about the account associated with the token
     send_funds(amount, dest, pin[, notes, assume_cost, facil_amount, dest_type])    ==> (string) transaction ID
-    
+
     request_funds(amount, source, pin[, notes, facil_amount, source_type])          ==> (string) request ID
     fulfill_request(request_id, pin[, amount, notes, funds_source, assume_cost])
     cancel_request(request_id)
     get_request(request_id)
     get_pending_requests()
-    
+
     get_funding_sources()   ==> (array) a list of funding sources associated with the token
     get_funding_source(id)  ==> (dict) information about the {id} funding source
     add_funding_source(routing_number, account_number, account_type, account_name)
     verify_funding_source(source_id, deposit1, deposit2)
     withdraw(source_id, pin, amount)
     deposit(source_id, pin, amount)
-    
+
 
 DwollaGateway class:
-    
+
     set_mode(mode)          ==> (bool) did mode change?
     start_gateway_session() ==> (bool) did session start?
     add_gateway_product(name, amount[, desc, qty])              ==> (bool) was product added?
@@ -83,6 +90,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.5.0
+
+* Add support for Dwolla's UAT
 
 1.4.9
 
@@ -157,7 +168,7 @@ This wrapper is a forked extension of Thomas Hansen's 'dwolla-python' module.
 
 http://developers.dwolla.com/dev
 
-## License 
+## License
 
 (The MIT License)
 
