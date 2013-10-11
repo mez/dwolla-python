@@ -100,9 +100,12 @@ class DwollaGateway(object):
         amount = float(amount)
 
         raw = '%s&%s' % (checkout_id, amount)
-        hash = hmac.new(self.client_secret, raw, hashlib.sha1).hexdigest()
+        tag = hmac.new(self.client_secret, raw, hashlib.sha1).hexdigest()
 
-        return True if (hash == signature) else False
+        if len(tag) != len(signature):
+            return False
+
+        return all([x == y for x, y in zip(tag, signature)])
 
 
 class DwollaAPIError(Exception):
