@@ -14,6 +14,12 @@ import requests
 import datetime
 import os
 
+verify_ssl = False if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else True
+debug = True if (os.getenv('DWOLLA_DEBUG') == 'True') else False
+sandbox = True if (os.getenv('DWOLLA_SANDBOX') == 'True') else False
+protocol = 'http://' if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else 'https://'
+host = os.getenv('DWOLLA_API_HOST', (self.protocol + 'uat.dwolla.com/') if self.sandbox else (self.protocol + 'www.dwolla.com/'))
+
 class DwollaGateway(object):
     def __init__(self, client_id, client_secret, redirect_uri):
         self.client_id = client_id
@@ -21,11 +27,11 @@ class DwollaGateway(object):
         self.redirect_uri = redirect_uri
         self.session = []
         self.mode = 'LIVE'
-        self.verify_ssl = False if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else True
-        self.debug = True if (os.getenv('DWOLLA_DEBUG') == 'True') else False
-        self.sandbox = True if (os.getenv('DWOLLA_SANDBOX') == 'True') else False
-        self.protocol = 'http://' if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else 'https://'
-        self.host = os.getenv('DWOLLA_API_HOST', (self.protocol + 'uat.dwolla.com/') if self.sandbox else (self.protocol + 'www.dwolla.com/'))
+        self.verify_ssl = verify_ssl
+        self.debug = debug
+        self.sandbox = sandbox
+        self.protocol = protocol
+        self.host = host
 
     def set_mode(self, mode):
         if mode not in ['LIVE', 'TEST']:
