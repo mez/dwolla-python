@@ -3,7 +3,7 @@
 
 ## Version
 
-1.5.0
+1.5.1
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -90,6 +90,12 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.5.1
+
+* Fixed float(amount) bug - [Pull req](https://github.com/Dwolla/dwolla-python/pull/6) by [@anfedorov](https://github.com/anfedorov)
+* Fix timing vulnerability in verify_gateway_signature - [Pull req](https://github.com/Dwolla/dwolla-python/pull/3) by [@anfedorov](https://github.com/anfedorov)
+* DwollaGateway.__init__ shouldn't require redirect_uri - [Issue](https://github.com/Dwolla/dwolla-python/issues/4) by [@anfedorov](https://github.com/anfedorov)
 
 1.5.0
 

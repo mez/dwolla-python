@@ -18,10 +18,10 @@ verify_ssl = False if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else True
 debug = True if (os.getenv('DWOLLA_DEBUG') == 'True') else False
 sandbox = True if (os.getenv('DWOLLA_SANDBOX') == 'True') else False
 protocol = 'http://' if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else 'https://'
-host = os.getenv('DWOLLA_API_HOST', (self.protocol + 'uat.dwolla.com/') if self.sandbox else (self.protocol + 'www.dwolla.com/'))
+host = os.getenv('DWOLLA_API_HOST', (protocol + 'uat.dwolla.com/') if sandbox else (protocol + 'www.dwolla.com/'))
 
 class DwollaGateway(object):
-    def __init__(self, client_id, client_secret, redirect_uri):
+    def __init__(self, client_id, client_secret, redirect_uri = False):
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
@@ -67,7 +67,6 @@ class DwollaGateway(object):
         request = {}
         request['Key'] = self.client_id
         request['Secret'] = self.client_secret
-        request['Redirect'] = self.redirect_uri
         request['Test'] = 'true' if (self.mode == 'TEST') else 'false'
         request['PurchaseOrder'] = {}
         request['PurchaseOrder']['DestinationId'] = destination_id
@@ -86,6 +85,8 @@ class DwollaGateway(object):
             request['PurchaseOrder']['Notes'] = notes
         if allowFundingSources:
             request['AllowFundingSources'] = 'true'
+        if self.redirect_uri:
+            request['Redirect'] = self.redirect_uri
 
         # Send off the request
         headers = {'Content-Type': 'application/json'}
@@ -124,8 +125,8 @@ class DwollaClientApp(object):
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.verify_ssl = False if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else True
-        self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/' if self.verify_ssl else 'http://www.dwolla.com/')
+        self.verify_ssl = verify_ssl
+        self.host = host
         self.api_url = self.host + "oauth/rest/"
         self.auth_url = self.host + "oauth/v2/authenticate"
         self.token_url = self.host + "oauth/v2/token"
@@ -334,8 +335,8 @@ class DwollaUser(object):
     '''
 
     def __init__(self, access_token):
-        self.verify_ssl = False if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else True
-        self.host = os.getenv('DWOLLA_API_HOST', 'https://www.dwolla.com/' if self.verify_ssl else 'http://www.dwolla.com/')
+        self.verify_ssl = verify_ssl
+        self.host = host
         self.api_url = self.host + "oauth/rest"
         self.access_token = access_token
 
