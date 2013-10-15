@@ -1,5 +1,4 @@
 # dwolla-python: Python Wrapper for Dwolla's API
-=================================================================================
 
 ## Version
 
@@ -164,6 +163,7 @@ This wrapper is a forked extension of Thomas Hansen's 'dwolla-python' module.
 - Jordan Bouvier &lt;jbouvier@gmail.com&gt;
 - Michael Schonfeld &lt;michael@dwolla.com&gt;
 - George Sibble &lt;george.sibble@ultapay.com&gt;
+- Andrey Fedorov &lt;anfedorov@gmail.com&gt;
 
 ## Support
 
