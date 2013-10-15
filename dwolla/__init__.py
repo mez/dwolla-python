@@ -97,8 +97,6 @@ class DwollaGateway(object):
         import hmac
         import hashlib
 
-        amount = float(amount)
-
         raw = '%s&%s' % (checkout_id, amount)
         tag = hmac.new(self.client_secret, raw, hashlib.sha1).hexdigest()
 
