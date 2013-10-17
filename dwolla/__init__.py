@@ -500,7 +500,7 @@ class DwollaUser(object):
 
         return self.post('transactions/send', params)
 
-    def refund(self, transaction_id, amount, pin, funds_source='Balance'
+    def refund(self, transaction_id, amount, pin, funds_source='Balance',
             notes=None):
         '''
         Refund a transaction from this user account to another one.
