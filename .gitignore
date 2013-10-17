@@ -9,5 +9,3 @@ lib/
 dist/
 dwolla.egg-info/
 .pypirc
-examples/_keys.py
-examples/_keys.pyc

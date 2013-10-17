@@ -1,15 +1,13 @@
 # dwolla-python: Python Wrapper for Dwolla's API
 
 ## Version
-
-1.5.1
+1.6.0
 
 ## Requirements
 - [Python](http://www.python.org/)
 - [Dwolla Application](https://www.dwolla.com/applications)
 
 ## Installation
-
 Automatic installation using [pip](http://pypi.python.org/pypi):
 
     pip install dwolla
@@ -25,6 +23,7 @@ print transactionId
 ```
 
 ## Examples / Quickstart
+To use the examples in the /examples folder, first edit the _keys.py file and add your Dwolla API application's key, and secret, along with your account's [OAuth token](https://developers.dwolla.com/dev/token), and PIN.
 
 This repo includes various usage examples, including:
 
@@ -89,6 +88,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.6.0
+
+* Add refund API endpoint
 
 1.5.1
 

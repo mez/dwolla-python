@@ -500,6 +500,29 @@ class DwollaUser(object):
 
         return self.post('transactions/send', params)
 
+    def refund(self, transaction_id, amount, pin, funds_source='Balance'
+            notes=None):
+        '''
+        Refund a transaction from this user account to another one.
+
+        :param transaction_id: The original transaction ID to refund.
+
+        :param amount: Amount of funds to refund. Can be a partial refund.
+
+        :param pin: User's pin number to verify transaction.
+
+        :param funds_source: (optional) The Dwolla ID of the funding
+           source to be used. Defaults to the user's Dwolla balance.
+
+        :param notes: (optional) Note to attach to the refund transaction.
+            Limited to 250 characters.
+        '''
+        params = {'pin': pin, 'transactionId': transaction_id, 'amount': amount, 'fundsSource': funds_source}
+        if notes:
+            params['notes'] = notes
+
+        return self.post('transactions/refund', params)
+
     def request_funds(self, amount, source,
             notes=None, facil_amount=None, source_type=None):
         '''
