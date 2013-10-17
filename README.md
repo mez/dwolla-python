@@ -1,4 +1,5 @@
-# dwolla-python: Python Wrapper for Dwolla's API
+# dwolla-python
+Official Python wrapper for Dwolla's API
 
 ## Version
 1.6.0
