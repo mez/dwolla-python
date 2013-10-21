@@ -21,7 +21,7 @@ PROTOCOL = 'http://' if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else 'https:
 HOST = os.getenv('DWOLLA_API_HOST', (PROTOCOL + 'uat.dwolla.com/') if SANDBOX else (PROTOCOL + 'www.dwolla.com/'))
 
 class DwollaGateway(object):
-    def __init__(self, client_id, client_secret, redirect_uri = False):
+    def __init__(self, client_id, client_secret, redirect_uri=False):
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
@@ -49,7 +49,7 @@ class DwollaGateway(object):
         self.session.append(product)
         return True
 
-    def get_gateway_URL(self, destination_id, order_id = None, discount = 0, shipping = 0, tax = 0, notes = None, callback = None, allowFundingSources = False):
+    def get_gateway_URL(self, destination_id, order_id = None, discount = 0, shipping = 0, tax = 0, notes = None, callback = None, allowFundingSources = False, allowGuestCheckout = True):
         # Calcualte subtotal
         subtotal = 0
         for product in self.session:
@@ -63,6 +63,7 @@ class DwollaGateway(object):
         request['Key'] = self.client_id
         request['Secret'] = self.client_secret
         request['Test'] = 'true' if (self.mode == 'TEST') else 'false'
+        request['AllowGuestCheckout'] = allowGuestCheckout
         request['PurchaseOrder'] = {}
         request['PurchaseOrder']['DestinationId'] = destination_id
         request['PurchaseOrder']['OrderItems'] = self.session

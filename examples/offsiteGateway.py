@@ -15,7 +15,7 @@ Dwolla = DwollaGateway(_keys.apiKey, _keys.apiSecret, 'http://localhost:5000/red
 
 
 '''
-    EXAMPLE 1: (simple example) 
+    EXAMPLE 1: (simple example)
       Create a new offsite gateway checkout
       session, with 1 test product, and
       a minimum of parameters
@@ -24,10 +24,10 @@ Dwolla = DwollaGateway(_keys.apiKey, _keys.apiSecret, 'http://localhost:5000/red
 def example1():
     # Clears out any previous products
     Dwolla.start_gateway_session()
-    
+
     # Add first product; Price = $10, Qty = 1
     Dwolla.add_gateway_product('Test 1', 10)
-    
+
     # Creates a checkout session, and return the URL
     # Destination ID: 812-626-8794
     url = Dwolla.get_gateway_URL('812-626-8794')
@@ -36,7 +36,7 @@ def example1():
 
 
 '''
-    EXAMPLE 2: (in-depth example) 
+    EXAMPLE 2: (in-depth example)
       Create a new offsite gateway checkout
       session, with 2 test products, a
       discount, add shipping costs, tax,
@@ -46,16 +46,16 @@ def example1():
 def example2():
     # Set the server mode to test mode
     Dwolla.set_mode('TEST')
-    
+
     # Clears out any previous products
     Dwolla.start_gateway_session()
-    
+
     # Add first product; Price = $10, Qty = 1
     Dwolla.add_gateway_product('Test 1', 10, 'Test product')
-    
+
     # Add first product; Price = $6, Qty = 2
     Dwolla.add_gateway_product('Test 2', 6, 'Another Test product', 2)
-    
+
     # Creates a checkout session, and return the URL
     # Destination ID: 812-626-8794
     # Order ID: 10001
@@ -70,7 +70,7 @@ def example2():
 
 
 '''
-    EXAMPLE 3: (Verifying an offsite gateway signature) 
+    EXAMPLE 3: (Verifying an offsite gateway signature)
       Verify the signature returned from
       Dwolla's offsite gateway redirect
 '''
@@ -78,10 +78,10 @@ def example2():
 def redirect():
     # Grab Dwolla's proposed signature
     signature = request.args.get("signature")
-    
+
     # Grab Dwolla's checkout ID
     checkout_id = request.args.get("checkoutId")
-    
+
     # Grab the reported total transaction amount
     amount = request.args.get("amount")
 
