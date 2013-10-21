@@ -108,6 +108,16 @@ class DwollaGateway(object):
 
         return all([x == y for x, y in zip(tag, signature)])
 
+    def verify_webhook_signature(self, signature, body):
+        import hmac
+        import hashlib
+
+        tag = hmac.new(self.client_secret, body, hashlib.sha1).hexdigest()
+
+        if len(tag) != len(signature):
+            return False
+
+        return all([x == y for x, y in zip(tag, signature)])
 
 class DwollaAPIError(Exception):
     '''Raised if the dwolla api returns an error.'''
