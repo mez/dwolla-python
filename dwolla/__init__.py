@@ -339,7 +339,6 @@ class DwollaUser(object):
     '''
 
     def __init__(self, access_token):
-        VERIFY_SSL = verify_ssl
         self.api_url = HOST + "oauth/rest"
         self.access_token = access_token
 

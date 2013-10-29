@@ -2,7 +2,7 @@
 Official Python wrapper for Dwolla's API
 
 ## Version
-1.6.2
+1.6.3
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -89,6 +89,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.6.3
+
+* Fix an issue with the verify_ssl variable
 
 1.6.2
 
