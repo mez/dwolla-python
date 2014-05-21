@@ -2,7 +2,7 @@
 Official Python wrapper for Dwolla's API
 
 ## Version
-1.6.3
+1.6.4
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -89,6 +89,10 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.6.4
+
+* Updated a payment and request response to use HOST variable instead of hardcoded string (should now work with UAT)
 
 1.6.3
 

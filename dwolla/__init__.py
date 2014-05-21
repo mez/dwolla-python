@@ -87,14 +87,14 @@ class DwollaGateway(object):
         # Send off the request
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(request)
-        response = requests.post('https://www.dwolla.com/payment/request', data=data, headers=headers, verify=VERIFY_SSL)
+        response = requests.post(HOST + "/payment/request", data=data, headers=headers, verify=VERIFY_SSL)
 
         # Parse the response
         response = json.loads(response.content)
         if response['Result'] != 'Success':
             raise DwollaAPIError(response['Message'])
 
-        return 'https://www.dwolla.com/payment/checkout/%s' % response['CheckoutId']
+        return HOST + "/payment/checkout/%s" % response['CheckoutId']
 
     def verify_gateway_signature(self, signature, checkout_id, amount):
         import hmac
