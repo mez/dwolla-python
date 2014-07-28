@@ -2,7 +2,7 @@
 Official Python wrapper for Dwolla's API
 
 ## Version
-1.6.4
+1.7.0
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -49,7 +49,8 @@ This repo includes various usage examples, including:
 DwollaClientApp class:
 
     init_oauth_url(redircet_uri, scope) ==> (string) OAuth permissions page URL
-    get_oauth_token(code)               ==> (string) a never-expiring OAuth access token
+    get_oauth_token(code)               ==> (array) an array with expiring oauth and refresh tokens, including their durations of validity in seconds
+    refresh_auth (refresh_token)        ==> (array) an array with expiring oauth and refresh tokens, including their durations of validity in seconds
     get_account_info(account_id)        ==> (array) the user entity for {account_id}
     get_nearby_spots([lat, lon, range, limit])  ==> (array) list of nearby spots matching the search criteria
     register_user(email, password, pin, firstName, lastName, address, address2, city, state, zip, phone, dateOfBirth[, organization, ein, type, acceptTerms])   ==> (dict) the newly created user record
@@ -86,9 +87,13 @@ DwollaGateway class:
     start_gateway_session() ==> (bool) did session start?
     add_gateway_product(name, amount[, desc, qty])              ==> (bool) was product added?
     verify_gateway_signature(signature, checkout_id, amount)    ==> (bool) is signature valid?
-    get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
+    get_gateway_URL(dwestination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.7.0
+
+* BREAKING CHANGE, get_oauth_token() now returns an array, and refresh_auth() also returns an array. OAuth tokens now expire and must be refreshed with a refresh token. Tokens are accessible by looking up the 'access_token' and 'refresh_token' members of the array.
 
 1.6.4
 

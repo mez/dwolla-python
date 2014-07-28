@@ -30,14 +30,30 @@ def index():
     STEP 2: 
       Exchange the temporary code given
       to us in the querystring, for
-      a never-expiring OAuth access token
+      an expiring OAuth access token and refresh token
 '''
 @app.route("/dwolla/oauth_return")
 def dwolla_oauth_return():
     oauth_return_url = url_for('dwolla_oauth_return', _external=True) # Point back to this file/URL
     code = request.args.get("code")
-    token = Dwolla.get_oauth_token(code, redirect_uri=oauth_return_url)
-    return 'Your never-expiring OAuth access token is: <b>%s</b>' % token
+    info = Dwolla.get_oauth_token(code, redirect_uri=oauth_return_url)
+    # Token expiration can be found as parameters in the 'info' array.
+    return 'Your expiring OAuth access token is: <b>%s</b>, and refresh token is: <b>%s</b>' % (info['access_token'], info['refresh_token'])
+
+'''
+    STEP 3:
+      Exchange your expiring OAuth token with a new
+      one by providing a refresh token given by
+      `get_oauth_token`
+'''
+
+@app.route("/dwolla/oauth_refresh")
+def dwolla_oauth_refresh():
+    oauth_return_url = url_for('dwolla_oauth_return', _external=True) # Point back to this file/URL
+    refresh_token = request.args.get("refresh_token")
+    info = Dwolla.refresh_auth(refresh_token, redirect_uri=oauth_return_url)
+    # Token expiration can be found as parameters in the 'info' array.
+    return 'Your expiring OAuth access token is: <b>%s</b>, and refresh token is: <b>%s</b>' % (info['access_token'], info['refresh_token'])
 
 
 # Run the app
