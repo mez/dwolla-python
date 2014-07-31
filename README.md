@@ -2,7 +2,7 @@
 Official Python wrapper for Dwolla's API
 
 ## Version
-1.7.0
+1.7.1
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -58,6 +58,8 @@ DwollaClientApp class:
 DwollaUser class:
 
     get_balance()                           ==> (string) the Dwolla balance of the account associated with the token
+    get_autowithdrawal_status()
+    set_autowithdrawal_status(enabled, fundingId)
     get_account_info(account_id)            ==> (dict) the user entity associated with the token
     get_nearby_users(lat, lon)
     get_contacts([search, types, limit])    ==> (array) list of contacts matching the search criteria
@@ -90,6 +92,9 @@ DwollaGateway class:
     get_gateway_URL(dwestination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.7.1
+* Added support for setting and getting autowithdrawal status from the `accounts/features/autowithdrawal` endpoint
 
 1.7.0
 

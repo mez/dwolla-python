@@ -281,6 +281,7 @@ class DwollaClientApp(object):
             of the Dwolla account
         '''
         return self.get("users/%s" % account_id)
+        
 
     def get_nearby_spots(self, lat='41.59', lon='-93.62', range=10, limit=10):
         '''
@@ -397,6 +398,17 @@ class DwollaUser(object):
     def post(self, endpoint, data):
         resp = self.api_post(endpoint, data)
         return self.parse_response(resp)
+
+    def get_autowithdrawal_status(self):
+        return self.get("account/features/auto_withdrawal", oauth_token = self.access_token)
+
+    def set_autowithdrawal_status(self, enabled, fundingid):
+        params = {}
+        if enabled:
+            params['enabled'] = enabled
+        if fundingid:
+            params['fundingId'] = fundingid
+        return self.post("account/features/auto_withdrawal", params)
 
     def get_account_info(self):
         '''returs the account info for this user account'''
