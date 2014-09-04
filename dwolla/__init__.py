@@ -214,7 +214,7 @@ class DwollaClientApp(object):
         '''
         params['client_id'] = self.client_id
         params['client_secret'] = self.client_secret
-        url = "%s/%s" % (self.api_url, resource)
+        url = "%s%s" % (self.api_url, resource)
         return requests.get(url, params=params, verify=VERIFY_SSL)
 
     def api_post(self, endpoint, data):
