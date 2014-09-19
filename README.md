@@ -2,7 +2,7 @@
 Official Python wrapper for Dwolla's API
 
 ## Version
-1.6.4
+1.6.5
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -43,6 +43,29 @@ This repo includes various usage examples, including:
 * `DWOLLA_DEBUG` (optional; True/False) Enable verbose debug?
 * `DWOLLA_SANDBOX` (optional; True/False) Use Dwolla's UAT env?
 * `DWOLLA_API_HOST` (optional; String/URL) A custom API host URL; defaults to https://www.dwolla.com/
+
+## Instantiation Variables
+
+If an application makes it difficult to use environment variables to set parameters, each of the aforementioned variables can be put into a Python `dict` upon instantiation of `DwollaGateway()`, `DwollaClientApp()`, and `DwollaUser()`.
+
+```python
+{
+    'VERIFY_SSL': True,
+    'DEBUG': True,
+    'SANDBOX': True,
+    'HOST': 'https://somecustomhost.thatyouprobablywontset.dwolla.com'
+}
+```
+
+Let's take the previous example from the Usage section, and make our requests target the UAT environment via instantiation variables:
+
+```python
+from dwolla import DwollaUser
+DwollaUser = DwollaUser('[OAuth Token Goes Here]', {'SANDBOX': True})
+
+transactionId = DwollaUser.send_funds(1.00, '812-626-8794', '[PIN]')
+print transactionId
+```
 
 ## Methods
 

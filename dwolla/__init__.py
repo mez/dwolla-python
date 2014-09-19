@@ -21,7 +21,23 @@ PROTOCOL = 'http://' if (os.getenv('DWOLLA_VERIFY_SSL') == 'False') else 'https:
 HOST = os.getenv('DWOLLA_API_HOST', (PROTOCOL + 'uat.dwolla.com/') if SANDBOX else (PROTOCOL + 'www.dwolla.com/'))
 
 class DwollaGateway(object):
-    def __init__(self, client_id, client_secret, redirect_uri=False):
+    def __init__(self, client_id, client_secret, redirect_uri=False, instOpts=False):
+
+        global VERIFY_SSL, DEBUG, SANDBOX, PROTOCOL, HOST
+
+        if type(instOpts) is dict:
+            if 'VERIFY_SSL' in instOpts:
+                VERIFY_SSL = instOpts['VERIFY_SSL']
+            if 'DEBUG' in instOpts:
+                DEBUG = instOpts['DEBUG']
+            if 'SANDBOX' in instOpts:
+                SANDBOX = instOpts['SANDBOX']
+            PROTOCOL = 'http://' if VERIFY_SSL is False else 'https://'
+            if 'HOST' in instOpts: 
+                HOST = instOpts['HOST']
+            else:
+                HOST = (PROTOCOL + 'uat.dwolla.com/') if SANDBOX else (PROTOCOL + 'www.dwolla.com/')
+
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
@@ -128,7 +144,23 @@ class DwollaClientApp(object):
     '''
     Encapsulates OAuth dance, and making requests to the Dwolla api.
     '''
-    def __init__(self, client_id, client_secret):
+    def __init__(self, client_id, client_secret, instOpts=False):
+
+        global VERIFY_SSL, DEBUG, SANDBOX, PROTOCOL, HOST
+
+        if type(instOpts) is dict:
+            if 'VERIFY_SSL' in instOpts:
+                VERIFY_SSL = instOpts['VERIFY_SSL']
+            if 'DEBUG' in instOpts:
+                DEBUG = instOpts['DEBUG']
+            if 'SANDBOX' in instOpts:
+                SANDBOX = instOpts['SANDBOX']
+            PROTOCOL = 'http://' if VERIFY_SSL is False else 'https://'
+            if 'HOST' in instOpts:
+                HOST = instOpts['HOST']
+            else:
+                HOST = (PROTOCOL + 'uat.dwolla.com/') if SANDBOX else (PROTOCOL + 'www.dwolla.com/')
+
         self.client_id = client_id
         self.client_secret = client_secret
         self.api_url = HOST + "oauth/rest/"
@@ -338,7 +370,23 @@ class DwollaUser(object):
     to instantiate this class, which wraps useful api resources/functions.
     '''
 
-    def __init__(self, access_token):
+    def __init__(self, access_token, instOpts=False):
+
+        global VERIFY_SSL, DEBUG, SANDBOX, PROTOCOL, HOST
+
+        if type(instOpts) is dict:
+            if 'VERIFY_SSL' in instOpts:
+                VERIFY_SSL = instOpts['VERIFY_SSL']
+            if 'DEBUG' in instOpts:
+                DEBUG = instOpts['DEBUG']
+            if 'SANDBOX' in instOpts:
+                SANDBOX = instOpts['SANDBOX']
+            PROTOCOL = 'http://' if VERIFY_SSL is False else 'https://'
+            if 'HOST' in instOpts: 
+                HOST = instOpts['HOST']
+            else:
+                HOST = (PROTOCOL + 'uat.dwolla.com/') if SANDBOX else (PROTOCOL + 'www.dwolla.com/')
+
         self.api_url = HOST + "oauth/rest"
         self.access_token = access_token
 
