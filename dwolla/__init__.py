@@ -42,7 +42,7 @@ class DwollaGateway(object):
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
         self.session = []
-        self.mode = 'LIVE'
+        self.mode = 'TEST' if SANDBOX else 'LIVE'
 
     def set_mode(self, mode):
         if mode not in ['LIVE', 'TEST']:
