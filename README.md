@@ -2,7 +2,7 @@
 Official Python wrapper for Dwolla's API
 
 ## Version
-1.6.5
+1.6.6
 
 ## Requirements
 - [Python](http://www.python.org/)
@@ -112,6 +112,11 @@ DwollaGateway class:
     get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
 
 ## Changelog
+
+1.6.5
+
+* Fixed PyPi issue with README error on install. README on PyPi is of fully compliant RST format and 
+no longer a symlink.
 
 1.6.4
 
