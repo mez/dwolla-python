@@ -18,11 +18,23 @@
 '''
 
 import requests
+import json
 
 import _settings
 
 class RestClient():
     def __init__(self, settings=False):
         self.settings = settings if settings else _settings.DwollaSettings()
+        self.settings.host = self.settings.sandbox_host if self.settings.sandbox else self.settings.production_host
 
+    def _post(self, endpoint, params, customPostfix=False, dwollaParse=True):
+        try:
+            resp = requests.post(self.settings.host
+                                 + customPostfix if customPostfix else self.settings.default_postfix
+                                 + endpoint, json.dumps(params))
+        except Exception as e:
+            if self.settings.debug:
+                print "dwolla-python: An error has occured while making a POST request:\n" + e.message
+
+        return resp.json() if resp else ""
 
