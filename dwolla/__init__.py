@@ -22,7 +22,8 @@ import json
 
 import _settings
 
-class RestClient():
+
+class DwollaRest():
     def __init__(self, settings=False):
         """
         Constructor.
@@ -31,8 +32,8 @@ class RestClient():
                          using _settings.py is not desired
         :return: None (__new__() returns the new instance ;))
         """
-        self.settings = settings if settings else _settings.DwollaSettings()
-        self.settings.host = self.settings.sandbox_host if self.settings.sandbox else self.settings.production_host
+        self.settings = settings if settings else _settings.s
+        self.settings.host = self.settings['sandbox_host'] if self.settings['sandbox'] else self.settings['production_host']
 
     def _parse(self, response):
         """
@@ -58,11 +59,11 @@ class RestClient():
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.post(self.settings.host
-                                 + customPostfix if customPostfix else self.settings.default_postfix
+            resp = requests.post(self.settings['host']
+                                 + customPostfix if customPostfix else self.settings['default_postfix']
                                  + endpoint, json.dumps(params))
         except Exception as e:
-            if self.settings.debug:
+            if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a POST request:\n" + e.message
 
         return self._parse(json.loads(resp.json())) if dwollaParse else json.loads(resp.json())
@@ -77,9 +78,9 @@ class RestClient():
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.get(self.settings.host + self.settings.default_postfix + endpoint, params)
+            resp = requests.get(self.settings.host + self.settings['default_postfix'] + endpoint, params)
         except Exception as e:
-            if self.settings.debug:
+            if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message
 
         return self._parse(json.loads(resp.json())) if dwollaParse else json.loads(resp.json())
