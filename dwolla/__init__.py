@@ -33,7 +33,7 @@ class DwollaRest():
         :return: None (__new__() returns the new instance ;))
         """
         self.settings = settings if settings else _settings.s
-        self.settings.host = self.settings['sandbox_host'] if self.settings['sandbox'] else self.settings['production_host']
+        self.settings['host'] = self.settings['sandbox_host'] if self.settings['sandbox'] else self.settings['production_host']
 
     def _parse(self, response):
         """
@@ -43,7 +43,7 @@ class DwollaRest():
         :return: Usually either a string or a dictionary depending
                  the on endpoint accessed.
         """
-        if json['Success'] is not True:
+        if response['Success'] is not True:
             raise Exception("dwolla-python: An API error was encountered.\nServer Message:\n" + response['Message'])
         else:
             return response['Response']
@@ -65,8 +65,8 @@ class DwollaRest():
         except Exception as e:
             if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a POST request:\n" + e.message
-
-        return self._parse(json.loads(resp.json())) if dwollaParse else json.loads(resp.json())
+        else:
+            return self._parse(json.loads(resp.text)) if dwollaParse else json.loads(resp.text)
 
     def _get(self, endpoint, params, dwollaParse=True):
         """
@@ -78,9 +78,9 @@ class DwollaRest():
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.get(self.settings.host + self.settings['default_postfix'] + endpoint, params)
+            resp = requests.get(self.settings['host'] + self.settings['default_postfix'] + endpoint, params=params)
         except Exception as e:
             if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message
-
-        return self._parse(json.loads(resp.json())) if dwollaParse else json.loads(resp.json())
+        else:
+            return self._parse(json.loads(resp.text)) if dwollaParse else json.loads(resp.json())

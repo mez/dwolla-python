@@ -4,5 +4,6 @@ s = {
     'default_postfix': 'oauth/rest',
     'sandbox': True,
     'debug': True,
-    'oauth_token': 'bla bla bla'
+    'oauth_token': 'bla bla bla',
+    'host': None
 }

@@ -10,7 +10,7 @@
   This file contains functionality for all accounts related endpoints.
 '''
 
-import dwolla
+import __init__ as dwolla
 
 
 class Accounts(dwolla.DwollaRest):
