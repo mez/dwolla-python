@@ -7,7 +7,7 @@
 
   An official requests based wrapper for the Dwolla API.
 
-  This file contains functionality for all OAuth related endpoints.
+  This file contains functionality for all funding source related endpoints.
 '''
 
 import dwolla
