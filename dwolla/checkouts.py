@@ -90,3 +90,39 @@ class Checkouts(dwolla.DwollaRest):
         else:
             raise Exception('Unable to create checkout due to API error.')
 
+    def get(self, id):
+        if not id:
+            raise Exception('get() requires id parameter')
+
+        return self._get('/offsitegateway/checkouts/' + id,
+                         {
+                             'client_id': self.settings['client_id'],
+                             'client_secret': self.settings['client_secret']
+                         })
+
+    def complete(self, id):
+        if not id:
+            raise Exception('complete() requires id parameter')
+
+        return self._get('/offsitegateway/checkouts/' + id + '/complete/',
+                         {
+                             'client_id': self.settings['client_id'],
+                             'client_secret': self.settings['client_secret']
+                         })
+
+    def verify(self, sig, id, amount):
+        if not sig:
+            raise Exception('verify() requires sig parameter')
+        if not id:
+            raise Exception('verify() requires id parameter')
+        if not amount:
+            raise Exception('verify() requires amount parameter')
+
+        # Normalize amount
+        amount = "{0:.2f}".format(amount)
+
+        
+
+
+
+
