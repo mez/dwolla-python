@@ -111,6 +111,9 @@ class Checkouts(dwolla.DwollaRest):
                          })
 
     def verify(self, sig, id, amount):
+        import hmac
+        import hashlib
+
         if not sig:
             raise Exception('verify() requires sig parameter')
         if not id:
@@ -119,9 +122,12 @@ class Checkouts(dwolla.DwollaRest):
             raise Exception('verify() requires amount parameter')
 
         # Normalize amount
-        amount = "{0:.2f}".format(amount)
+        ampstr = '%s&%.2f' % (id, amount)
 
-        
+        # Check signature
+        return hmac.new(self.settings['client_secret'], ampstr, hashlib.sha1).hexdigest() == sig
+
+
 
 
 
