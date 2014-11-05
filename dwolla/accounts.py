@@ -12,7 +12,6 @@
 
 import dwolla
 
-
 class Accounts(dwolla.DwollaRest):
     def basic(self, aid):
         """

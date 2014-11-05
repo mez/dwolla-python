@@ -13,7 +13,7 @@
 import dwolla
 
 
-class Requests(dwolla.DwollaRest):
+class Request(dwolla.DwollaRest):
 
     def create(self, sourceid, amount, params=False):
         """

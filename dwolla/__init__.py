@@ -17,7 +17,7 @@
   Link -- http://developers.dwolla.com
 '''
 
-import requests
+import request
 import json
 
 import _settings
@@ -59,7 +59,7 @@ class DwollaRest():
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.post(self.settings['host']
+            resp = request.post(self.settings['host']
                                  + customPostfix if customPostfix else self.settings['default_postfix']
                                  + endpoint, json.dumps(params))
         except Exception as e:
@@ -78,7 +78,7 @@ class DwollaRest():
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.get(self.settings['host'] + self.settings['default_postfix'] + endpoint, params=params)
+            resp = request.get(self.settings['host'] + self.settings['default_postfix'] + endpoint, params=params)
         except Exception as e:
             if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message

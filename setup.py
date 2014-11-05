@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='dwolla-python',
     version='2.0.0',
-    packages=['requests'],
+    packages=['dwolla'],
     url='http://developers.dwolla.com',
     license='MIT',
     author='Dwolla Inc, David Stancu',
