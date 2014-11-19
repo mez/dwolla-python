@@ -10,133 +10,130 @@
   This file contains functionality for all funding source related endpoints.
 '''
 
-import dwolla
+from rest import r
 
+def info(fid):
+    """
+    Retrieves information about a funding source by ID.
 
-class FundingSources(dwolla.Rest):
+    :param fid: String of funding ID of account to retrieve information for.
+    :return: Dictionary with funding ID info.
+    """
+    if not fid:
+        raise Exception('info() requires fid parameter')
 
-    def info(self, fid):
-        """
-        Retrieves information about a funding source by ID.
+    return r._get('/fundingsources/' + fid, {'oauth_token': r.settings['oauth_token']})
 
-        :param fid: String of funding ID of account to retrieve information for.
-        :return: Dictionary with funding ID info.
-        """
-        if not fid:
-            raise Exception('info() requires fid parameter')
+def get(params=False):
+    """
+    Returns a list of funding sources associated to the account
+    under the current OAuth token.
 
-        return self._get('/fundingsources/' + fid, {'oauth_token': self.settings['oauth_token']})
+    :param params: Dictionary with additional parameters.
+    :return: Dictionary of funding sources.
+    """
+    p = {
+        'oauth_token': r.settings['oauth_token']
+    }
 
-    def get(self, params=False):
-        """
-        Returns a list of funding sources associated to the account
-        under the current OAuth token.
+    if params:
+        p = params.items + p.items
 
-        :param params: Dictionary with additional parameters.
-        :return: Dictionary of funding sources.
-        """
-        p = {
-            'oauth_token': self.settings['oauth_token']
-        }
+    return r._get('/fundingsources/', p)
 
-        if params:
-            p = params.items + p.items
+def add(account, routing, type, name):
+    """
+    Adds a funding source to the account under the current
+    OAuth token.
 
-        return self._get('/fundingsources/', p)
+    :param account: String with account number.
+    :param routing: String with routing number.
+    :param type: String with account type.
+    :param name: String with user defined name for account.
+    :return: None
+    """
+    if not account:
+        raise Exception('add() requires account parameter')
+    if not routing:
+        raise Exception('add() requires routing parameter')
+    if not type:
+        raise Exception('add() requires type parameter')
+    if not name:
+        raise Exception('add() requires name parameter')
 
-    def add(self, account, routing, type, name):
-        """
-        Adds a funding source to the account under the current
-        OAuth token.
+    return r._post('/fundingsources/',
+                      {
+                          'oauth_token': r.settings['oauth_token'],
+                          'account_number': account,
+                          'routing_number': routing,
+                          'account_type': type,
+                          'account_name': name
+                      })
 
-        :param account: String with account number.
-        :param routing: String with routing number.
-        :param type: String with account type.
-        :param name: String with user defined name for account.
-        :return: None
-        """
-        if not account:
-            raise Exception('add() requires account parameter')
-        if not routing:
-            raise Exception('add() requires routing parameter')
-        if not type:
-            raise Exception('add() requires type parameter')
-        if not name:
-            raise Exception('add() requires name parameter')
+def verify(d1, d2, fid):
+    """
+    Verifies a funding source for the account associated
+    with the funding ID under the current OAuth token via
+    the two micro-deposits.
+    :param d1: Double of first micro-deposit
+    :param d2: Double of second micro-deposit
+    :param fid: String with funding ID.
+    :return: None
+    """
+    if not d1:
+        raise Exception('verify() requires d1 parameter')
+    if not d2:
+        raise Exception('verify() requires d2 parameter')
+    if not fid:
+        raise Exception('verify() requires fid parameter')
 
-        return self._post('/fundingsources/',
-                          {
-                              'oauth_token': self.settings['oauth_token'],
-                              'account_number': account,
-                              'routing_number': routing,
-                              'account_type': type,
-                              'account_name': name
-                          })
+    return r._post('/fundingsources/' + fid,
+                      {
+                          'oauth_token': r.settings['oauth_token'],
+                          'deposit1': d1,
+                          'deposit2': d2
+                      })
 
-    def verify(self, d1, d2, fid):
-        """
-        Verifies a funding source for the account associated
-        with the funding ID under the current OAuth token via
-        the two micro-deposits.
-        :param d1: Double of first micro-deposit
-        :param d2: Double of second micro-deposit
-        :param fid: String with funding ID.
-        :return: None
-        """
-        if not d1:
-            raise Exception('verify() requires d1 parameter')
-        if not d2:
-            raise Exception('verify() requires d2 parameter')
-        if not fid:
-            raise Exception('verify() requires fid parameter')
+def withdraw(amount, fid):
+    """
+    Withdraws funds from a Dwolla account to the funding source
+    associated with the passed ID, under the account associated
+    with the current OAuth token.
 
-        return self._post('/fundingsources/' + fid,
-                          {
-                              'oauth_token': self.settings['oauth_token'],
-                              'deposit1': d1,
-                              'deposit2': d2
-                          })
+    :param amount: Double with amount to withdraw.
+    :param fid: String with funding ID to withdraw to.
+    :return: None
+    """
+    if not amount:
+        raise Exception('withdraw() requires amount parameter')
+    if not fid:
+        raise Exception('withdraw() requires fid parameter')
 
-    def withdraw(self, amount, fid):
-        """
-        Withdraws funds from a Dwolla account to the funding source
-        associated with the passed ID, under the account associated
-        with the current OAuth token.
+    return r._post('/fundingsources/'+ fid + '/withdraw/',
+                      {
+                          'oauth_token': r.settings['oauth_token'],
+                          'pin': r.settings['pin'],
+                          'amount': amount
+                      })
 
-        :param amount: Double with amount to withdraw.
-        :param fid: String with funding ID to withdraw to.
-        :return: None
-        """
-        if not amount:
-            raise Exception('withdraw() requires amount parameter')
-        if not fid:
-            raise Exception('withdraw() requires fid parameter')
+def deposit(amount, fid):
+    """
+    Deposits funds into the Dwolla account associated with the
+    OAuth token from the funding ID associated with the passed
+    ID.
 
-        return self._post('/fundingsources/'+ fid + '/withdraw/',
-                          {
-                              'oauth_token': self.settings['oauth_token'],
-                              'pin': self.settings['pin'],
-                              'amount': amount
-                          })
+    :param amount: Double with amount to deposit.
+    :param fid: String with funding ID to deposit from.
+    :return: None
+    """
+    if not amount:
+        raise Exception('deposit() requires amount parameter')
+    if not fid:
+        raise Exception('deposit() requires fid parameter')
 
-    def deposit(self, amount, fid):
-        """
-        Deposits funds into the Dwolla account associated with the
-        OAuth token from the funding ID associated with the passed
-        ID.
-
-        :param amount: Double with amount to deposit.
-        :param fid: String with funding ID to deposit from.
-        :return: None
-        """
-        if not amount:
-            raise Exception('deposit() requires amount parameter')
-        if not fid:
-            raise Exception('deposit() requires fid parameter')
-
-        return self._post('/fundingsources/' + fid + '/deposit/',
-                          {
-                              'oauth_token': self.settings['oauth_token'],
-                              'pin': self.settings['pin'],
-                              'amount': amount
-                          })
+    return r._post('/fundingsources/' + fid + '/deposit/',
+                      {
+                          'oauth_token': r.settings['oauth_token'],
+                          'pin': r.settings['pin'],
+                          'amount': amount
+                      })
