@@ -10,46 +10,46 @@
   This file contains functionality for all contact related endpoints.
 '''
 
-import dwolla
+from rest import r
 
-class Contacts(dwolla.Rest):
 
-    def get(self, params=False):
-        """
-        Get contacts from user associated with OAuth token.
+def get(params=False):
+    """
+    Get contacts from user associated with OAuth token.
 
-        :param params: Dictionary with additional parameters.
-        :return: Dictionary with contacts.
-        """
-        p = {'oauth_token': self.settings['oauth_token']}
+    :param params: Dictionary with additional parameters.
+    :return: Dictionary with contacts.
+    """
+    p = {'oauth_token': r.settings['oauth_token']}
 
-        if params:
-            p = (p.items + params.items)
+    if params:
+        p = (p.items + params.items)
 
-        return self._get('/contacts/', p)
+    return r._get('/contacts/', p)
 
-    def nearby(self, lat, lon, params=False):
-        """
-        Returns Dwolla spots near the specified geographical location.
 
-        :param lat: Double of latitudinal coordinates.
-        :param lon: Double of longitudinal coordinates.
-        :param params: Dictionary with additional parameters.
-        :return: Dictionary with spots.
-        """
-        if not lat:
-            raise Exception('nearby() requires lat parameter')
-        if not lon:
-            raise Exception('nearby() requires lon parameter')
+def nearby(lat, lon, params=False):
+    """
+    Returns Dwolla spots near the specified geographical location.
 
-        p = {
-            'client_id': self.settings['client_id'],
-            'client_secret': self.settings['client_secret'],
-            'latitude': lat,
-            'longitude': lon
-        }
+    :param lat: Double of latitudinal coordinates.
+    :param lon: Double of longitudinal coordinates.
+    :param params: Dictionary with additional parameters.
+    :return: Dictionary with spots.
+    """
+    if not lat:
+        raise Exception('nearby() requires lat parameter')
+    if not lon:
+        raise Exception('nearby() requires lon parameter')
 
-        if params:
-            p = (p.items + params.items)
+    p = {
+        'client_id': r.settings['client_id'],
+        'client_secret': r.settings['client_secret'],
+        'latitude': lat,
+        'longitude': lon
+    }
 
-        return self._get('/contacts/nearby/', p)
+    if params:
+        p = (p.items + params.items)
+
+    return r._get('/contacts/nearby/', p)
