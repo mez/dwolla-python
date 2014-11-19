@@ -13,7 +13,7 @@
 import dwolla
 
 
-class MassPay(dwolla.DwollaRest):
+class MassPay(dwolla.Rest):
     def create(self, fundssource, items, params=False):
         """
         Creates a MassPay job. Must pass in an array of items.

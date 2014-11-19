@@ -13,7 +13,7 @@
 import dwolla
 
 
-class OAuth(dwolla.DwollaRest):
+class OAuth(dwolla.Rest):
 
     def genauthurl(self, redirect=False, scope=False):
         """

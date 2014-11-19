@@ -12,7 +12,7 @@
 
 import dwolla
 
-class Transactions(dwolla.DwollaRest):
+class Transactions(dwolla.Rest):
 
     def send(self, destinationid, amount, params=False):
         """

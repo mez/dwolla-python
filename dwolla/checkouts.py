@@ -13,7 +13,7 @@
 import dwolla
 
 
-class Checkouts(dwolla.DwollaRest):
+class Checkouts(dwolla.Rest):
     def __init__(self):
         self.cart = False
 

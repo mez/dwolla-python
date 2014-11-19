@@ -12,7 +12,7 @@
 
 import dwolla
 
-class Contacts(dwolla.DwollaRest):
+class Contacts(dwolla.Rest):
 
     def get(self, params=False):
         """

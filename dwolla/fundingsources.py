@@ -13,7 +13,7 @@
 import dwolla
 
 
-class FundingSources(dwolla.DwollaRest):
+class FundingSources(dwolla.Rest):
 
     def info(self, fid):
         """
