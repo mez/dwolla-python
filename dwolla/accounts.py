@@ -12,7 +12,7 @@
 
 import dwolla
 
-class Accounts(dwolla.Rest):
+class Accounts(Rest):
     def basic(self, aid):
         """
         Returns basic account info for the passed account ID.
