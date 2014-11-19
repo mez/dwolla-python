@@ -10,9 +10,9 @@
   The following is a quick-start example for the Account class.
 '''
 
-import dwolla.accounts as a
+from dwolla import accounts
 
 # Example 1: Get basic information for a user
 # via their Dwolla ID
 
-print a.Accounts.basic('812-121-7199')
+print accounts.basic('812-121-7199')
