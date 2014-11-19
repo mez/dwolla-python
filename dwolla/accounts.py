@@ -82,7 +82,7 @@ def autowithdrawalstatus():
                          'oauth_token': r.settings['oauth_token']
                      })
 
-def toggleautowithdrawlstatus(status, fid):
+def toggleautowithdrawalstatus(status, fid):
     """
     Sets auto-withdrawal status of the account associated
     with the current OAuth token under the specified
