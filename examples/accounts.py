@@ -7,7 +7,7 @@
 
   An official requests based wrapper for the Dwolla API.
 
-  The following is a quick-start example for the Account class.
+  The following is a quick-start example for the account endpoints.
 '''
 
 from dwolla import accounts
