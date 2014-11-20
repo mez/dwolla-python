@@ -8,124 +8,79 @@
   An official requests based wrapper for the Dwolla API.
 
   This file contains functionality for all checkouts related endpoints.
+  ---------------------------------------------------------------------
+  These methods only submit requests to the API, the developer is
+  responsible for submitting properly formatted and correct requests.
+
+  Further information is available on: https://docs.dwolla.com
 '''
 
-import dwolla
+from rest import r
 
 
-class Checkouts(dwolla.Rest):
-    def __init__(self):
-        self.cart = False
+def create(purchaseorder, params=False):
+    if not purchaseorder:
+        raise Exception('create() requires purchaseorder parameter')
+    if type(purchaseorder) is dict:
+        if not purchaseorder['destinationId']:
+            raise Exception('purchaseorder has no destinationId key')
+        if not purchaseorder['total']:
+            raise Exception('purchaseorder has no total amount')
+    else:
+        raise Exception('create() requires purchaseorder to be of type dict')
 
-    def resetcart(self):
-        self.cart = False
+    p = {
+        'client_id': r.settings['client_id'],
+        'client_secret': r.settings['client_secret'],
+        'purchaseOrder': purchaseorder
+    }
 
-    def addtocart(self, name, desc, cost, quantity):
-        if not name:
-            raise Exception('addtocart() requires name parameter')
-        if not desc:
-            raise Exception('addtocart() requires desc parameter')
-        if not cost:
-            raise Exception('addtocart() requires cost parameter')
-        if not quantity:
-            raise Exception('addtocart() requires quantity parameter')
+    if params:
+        p = p.items + params.items
 
-        if not self.cart:
-            self.cart = []
+    id = r._post('/offsitegateway/checkouts/', p)
 
-        self.cart.append({
-            'name': name,
-            'description': desc,
-            'price': cost,
-            'quantity': quantity
-        })
+    if 'CheckoutId' in id:
+        return {'URL': r.settings['host'] + 'payment/checkout/' + id['CheckoutId']}.items + id.items
+    else:
+        raise Exception('Unable to create checkout due to API error.')
 
-    def create(self, purchaseorder, params=False):
-        if not purchaseorder:
-            raise Exception('create() requires purchaseorder parameter')
-        if type(purchaseorder) is dict:
-            if not purchaseorder['destinationId']:
-                raise Exception('purchaseorder has no destinationId key')
-            if not self.cart and not purchaseorder['total']:
-                raise Exception('purchaseorder has no total amount')
-        else:
-            raise Exception('create() requires purchaseorder to be of type dict')
+def get(id):
+    if not id:
+        raise Exception('get() requires id parameter')
 
-        p = {
-            'client_id': self.settings['client_id'],
-            'client_secret': self.settings['client_secret'],
-            'purchaseOrder': purchaseorder
-        }
+    return r._get('/offsitegateway/checkouts/' + id,
+                     {
+                         'client_id': r.settings['client_id'],
+                         'client_secret': r.settings['client_secret']
+                     })
 
-        if self.cart:
-            p['purchaseOrder']['total'] = 0
-            for item in self.cart:
-                p['purchaseOrder']['total'] += (item['price'] * item['quantity'])
-            p['purchaseOrder']['orderItems'] = self.cart
+def complete(id):
+    if not id:
+        raise Exception('complete() requires id parameter')
 
-        if not p['purchaseOrder']['total']:
-            for item in p['purchaseOrder']['orderItems']:
-                p['purchaseOrder']['total'] += (item['price'] * item['quantity'])
+    return r._get('/offsitegateway/checkouts/' + id + '/complete/',
+                     {
+                         'client_id': r.settings['client_id'],
+                         'client_secret': r.settings['client_secret']
+                     })
 
-        if 'tax' in p['purchaseOrder']:
-            p['purchaseOrder']['total'] += p['purchaseOrder']['tax']
-        if 'shipping' in p['purchaseOrder']:
-            p['purchaseOrder']['total'] += p['purchaseOrder']['shipping']
+def verify(sig, id, amount):
+    import hmac
+    import hashlib
 
-        if 'discount' in p['purchaseOrder']:
-            if p['purchaseOrder']['discount'] > 0:
-                p['purchaseOrder']['total'] -= p['purchaseOrder']['discount']
-            else:
-                p['purchaseOrder']['total'] += p['purchaseOrder']['discount']
+    if not sig:
+        raise Exception('verify() requires sig parameter')
+    if not id:
+        raise Exception('verify() requires id parameter')
+    if not amount:
+        raise Exception('verify() requires amount parameter')
 
-        p['purchaseOrder']['total'] = "{0:.2f}".format(p['purchaseOrder']['total'])
+    # Normalize amount
+    ampstr = '%s&%.2f' % (id, amount)
 
-        if params:
-            p = p.items + params.items
-
-        id = self._post('/offsitegateway/checkouts/', p)
-
-        if 'CheckoutId' in id:
-            return {'URL': self.settings['host'] + 'payment/checkout/' + id['CheckoutId']}.items + id.items
-        else:
-            raise Exception('Unable to create checkout due to API error.')
-
-    def get(self, id):
-        if not id:
-            raise Exception('get() requires id parameter')
-
-        return self._get('/offsitegateway/checkouts/' + id,
-                         {
-                             'client_id': self.settings['client_id'],
-                             'client_secret': self.settings['client_secret']
-                         })
-
-    def complete(self, id):
-        if not id:
-            raise Exception('complete() requires id parameter')
-
-        return self._get('/offsitegateway/checkouts/' + id + '/complete/',
-                         {
-                             'client_id': self.settings['client_id'],
-                             'client_secret': self.settings['client_secret']
-                         })
-
-    def verify(self, sig, id, amount):
-        import hmac
-        import hashlib
-
-        if not sig:
-            raise Exception('verify() requires sig parameter')
-        if not id:
-            raise Exception('verify() requires id parameter')
-        if not amount:
-            raise Exception('verify() requires amount parameter')
-
-        # Normalize amount
-        ampstr = '%s&%.2f' % (id, amount)
-
-        # Check signature
-        return hmac.new(self.settings['client_secret'], ampstr, hashlib.sha1).hexdigest() == sig
+    # Check signature
+    return hmac.new(r.settings['client_secret'], ampstr, hashlib.sha1).hexdigest() == sig
 
 
 
