@@ -90,7 +90,7 @@ def getitem(jobid, itemid):
                      {'oauth_token': r.settings['oauth_token']})
 
 
-def listjobs(self):
+def listjobs():
     """
     Lists all MassPay jobs for the user
     under the current OAuth token.
