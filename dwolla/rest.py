@@ -59,8 +59,9 @@ class Rest(object):
         """
         try:
             resp = requests.post(self.settings['host']
-                                + customPostfix if customPostfix else self.settings['default_postfix']
-                                                                      + endpoint, json.dumps(params))
+                                 + customPostfix if customPostfix else self.settings['default_postfix']
+                                 + endpoint, json.dumps(params), headers={'User-Agent': 'dwolla-python/2.x',
+                                                                          'Content-Type': 'application/json'})
         except Exception as e:
             if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a POST request:\n" + e.message
@@ -77,7 +78,8 @@ class Rest(object):
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.get(self.settings['host'] + self.settings['default_postfix'] + endpoint, params=params)
+            resp = requests.get(self.settings['host'] + self.settings['default_postfix'] + endpoint, params=params,
+                                headers={'User-Agent': 'dwolla-python/2.x'})
         except Exception as e:
             if self.settings['debug']:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message
