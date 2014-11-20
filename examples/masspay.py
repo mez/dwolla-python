@@ -7,7 +7,7 @@
 
   An official requests based wrapper for the Dwolla API.
 
-  The following is a quick-start example for the account endpoints.
+  The following is a quick-start example for the masspay endpoints.
 '''
 
 from dwolla import masspay
