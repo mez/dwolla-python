@@ -1,26 +1,44 @@
-import unittest, requests, json
-from dwolla import rest
+import unittest
+from dwolla import accounts, rest
 from mock import MagicMock
 
-
-class RestTest(unittest.TestCase):
+class AccountsTest(unittest.TestCase):
+    '''
+    We are testing the rest module against requests so that we see whether or not
+    it is passing the proper request forward. Like this, we do not have to test
+    against requests from other modules, but rather against rest.
+    '''
     def setUp(self):
-        requests.post = MagicMock()
-        requests.get = MagicMock()
-        json.loads = MagicMock()
+        rest.r._get = MagicMock()
+        rest.r._post = MagicMock()
+        rest.r.settings['client_id'] = "SOME ID"
+        rest.r.settings['client_secret'] = "SOME ID"
+        rest.r.settings['oauth_token'] = "AN OAUTH TOKEN"
 
-    def testpost(self):
-        rest.r._post('/some/endpoint', {'key': 'value'}, False, False)
-        requests.post.assert_any_call('https://uat.dwolla.com/oauth/rest/some/endpoint',
-                                      '{"key": "value"}',
-                                      headers={'Content-Type': 'application/json',
-                                               'User-Agent': 'dwolla-python/2.x'})
+    def testbasic(self):
+        accounts.basic('123456')
+        rest.r._get.assert_any_call('/users/123456', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
 
-    def testget(self):
-        rest.r._get('/another/endpoint', {'another_key': 'another_value'}, False)
-        requests.get.assert_any_call('https://uat.dwolla.com/oauth/rest/another/endpoint',
-                                     headers={'User-Agent': 'dwolla-python/2.x'},
-                                     params={'another_key': 'another_value'})
+    def testfull(self):
+        accounts.full()
+        rest.r._get.assert_any_call('/users/', {'oauth_token': 'AN OAUTH TOKEN'})
+
+    def testbalance(self):
+        accounts.balance()
+        rest.r._get.assert_any_call('/balance/', {'oauth_token': 'AN OAUTH TOKEN'})
+
+    def testnearby(self):
+        accounts.nearby(45, 50)
+        rest.r._get.assert_any_call('/users/nearby/', {'latitude': 45, 'client_secret': 'SOME ID', 'longitude': 50, 'client_id': 'SOME ID'})
+
+    def testautowithdrawalstatus(self):
+        accounts.autowithdrawalstatus()
+        rest.r._get.assert_any_call('/accounts/features/auto_withdrawl/', {'oauth_token': 'AN OAUTH TOKEN'})
+
+    def testtoggleautowithdrawalstatus(self):
+        accounts.toggleautowithdrawalstatus(True, '123456')
+        rest.r._post.assert_any_call('/accounts/features/auto_withdrawl', {'enabled': True, 'oauth_token': 'AN OAUTH TOKEN', 'fundingId': '123456'})
+
 
 if __name__ == '__main__':
     unittest.main()
