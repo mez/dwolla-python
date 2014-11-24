@@ -2,12 +2,8 @@ import unittest
 from dwolla import accounts, rest
 from mock import MagicMock
 
+
 class AccountsTest(unittest.TestCase):
-    '''
-    We are testing the rest module against requests so that we see whether or not
-    it is passing the proper request forward. Like this, we do not have to test
-    against requests from other modules, but rather against rest.
-    '''
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
