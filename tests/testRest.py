@@ -10,6 +10,11 @@ class RestTest(unittest.TestCase):
     against requests from other modules, but rather against rest.
     '''
     def setUp(self):
+        # We make a new Rest object just in case any other
+        # tests run before this one, so that they do not fail
+        # because they are mocked.
+        rest.r = rest.Rest()
+
         requests.post = MagicMock()
         requests.get = MagicMock()
         json.loads = MagicMock()

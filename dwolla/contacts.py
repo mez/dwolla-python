@@ -23,7 +23,7 @@ def get(params=False):
     p = {'oauth_token': r.settings['oauth_token']}
 
     if params:
-        p = (p.items + params.items)
+        p = dict(p.items() + params.items())
 
     return r._get('/contacts/', p)
 
@@ -50,6 +50,6 @@ def nearby(lat, lon, params=False):
     }
 
     if params:
-        p = (p.items + params.items)
+        p = dict(p.items() + params.items())
 
     return r._get('/contacts/nearby/', p)
