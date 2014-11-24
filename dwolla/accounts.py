@@ -48,7 +48,7 @@ def balance():
 
     :return: Balance
     """
-    return r._get('/balance', {'oauth_token': r.settings['oauth_token']})
+    return r._get('/balance/', {'oauth_token': r.settings['oauth_token']})
 
 def nearby(lat, lon):
     """
