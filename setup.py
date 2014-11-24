@@ -4,6 +4,10 @@ setup(
     name='dwolla-python',
     version='2.0.0',
     packages=['dwolla'],
+    install_requires=[
+        'requests',
+        'mock'
+    ],
     url='http://developers.dwolla.com',
     license='MIT',
     author='Dwolla Inc, David Stancu',

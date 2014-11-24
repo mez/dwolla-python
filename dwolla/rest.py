@@ -59,7 +59,7 @@ class Rest(object):
         """
         try:
             resp = requests.post(self.settings['host']
-                                 + customPostfix if customPostfix else self.settings['default_postfix']
+                                 + (customPostfix if customPostfix else self.settings['default_postfix'])
                                  + endpoint, json.dumps(params), headers={'User-Agent': 'dwolla-python/2.x',
                                                                           'Content-Type': 'application/json'})
         except Exception as e:
