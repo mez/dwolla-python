@@ -3,7 +3,7 @@ from dwolla import fundingsources, rest
 from mock import MagicMock
 
 
-class fundingSourcesTest(unittest.TestCase):
+class FundingSourcesTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
