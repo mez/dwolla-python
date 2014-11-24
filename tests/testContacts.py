@@ -17,7 +17,7 @@ class ContactsTest(unittest.TestCase):
 
     def testnearby(self):
         contacts.nearby(45, 50, {'another': 'parameter'})
-        print rest.r._get.assert_any_call('/contacts/nearby/', {'latitude': 45, 'client_secret': 'SOME ID', 'another': 'parameter', 'client_id': 'SOME ID', 'longitude': 50})
+        rest.r._get.assert_any_call('/contacts/nearby/', {'latitude': 45, 'client_secret': 'SOME ID', 'another': 'parameter', 'client_id': 'SOME ID', 'longitude': 50})
 
 if __name__ == '__main__':
     unittest.main()

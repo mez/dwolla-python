@@ -37,7 +37,7 @@ def get(params=False):
     }
 
     if params:
-        p = params.items + p.items
+        p = dict(params.items() + p.items())
 
     return r._get('/fundingsources/', p)
 
