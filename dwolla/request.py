@@ -34,7 +34,7 @@ def create(sourceid, amount, params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._post('/requests/', p)
 
@@ -51,7 +51,7 @@ def get(params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._get('/requests/', params=p)
 
@@ -99,6 +99,6 @@ def fulfill(requestid, amount, params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
-    return r.post('/requests/' + requestid + '/fulfill', p)
+    return r._post('/requests/' + requestid + '/fulfill', p)
