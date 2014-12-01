@@ -18,7 +18,7 @@ def create(fundssource, items, params=False):
     Creates a MassPay job. Must pass in an array of items.
 
     :param fundsSource: String of funding source for jobs.
-    :param items: Dictionary with items
+    :param items: Dictionary with items of type frozenset
     :param params: Dictionary with optional parameters
     :return: None
     """
@@ -35,7 +35,7 @@ def create(fundssource, items, params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._post('/masspay/', p)
 
@@ -68,7 +68,7 @@ def getjobitems(id, params=False):
     p = { 'oauth_token': r.settings['oauth_token'] }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._get('/masspay/' + id + '/items/', p)
 

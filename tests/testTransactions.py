@@ -1,9 +1,9 @@
 import unittest
-from dwolla import masspay, rest
+from dwolla import transactions, rest
 from mock import MagicMock
 
 
-class TransactionsTest(unittest.TestCase):
+class TransTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
@@ -31,7 +31,6 @@ class TransactionsTest(unittest.TestCase):
     def teststats(self):
         transactions.stats({'a': 'parameter'})
         rest.r._get.assert_any_call('/transactions/stats/', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
-
 
 if __name__ == '__main__':
     unittest.main()
