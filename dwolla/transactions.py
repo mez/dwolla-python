@@ -12,6 +12,7 @@
 
 from rest import r
 
+
 def send(destinationid, amount, params=False):
     """
     Sends money to the specified destination user.
@@ -34,13 +35,14 @@ def send(destinationid, amount, params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._post('/transactions/send/', p)
 
+
 def get(params=False):
     """
-    Lists transactions for the uer associated with
+    Lists transactions for the user associated with
     the currently set OAuth token.
 
     :param params: Dictionary with additional parameters
@@ -53,11 +55,12 @@ def get(params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._get('/transactions/', p)
 
-def info(id):
+
+def info(tid):
     """
     Returns transaction information for the transaction
     associated with the passed transaction ID
@@ -65,17 +68,18 @@ def info(id):
     :param id: String with transaction ID.
     :return: Dictionary with information about transaction.
     """
-    if not id:
+    if not tid:
         raise Exception('info() requires id parameter')
 
-    return r._get('/transactions/' + id,
+    return r._get('/transactions/' + tid,
                      {
                          'oauth_token': r.settings['oauth_token'],
                          'client_id': r.settings['client_id'],
                          'client_secret': r.settings['client_secret']
                      })
 
-def refund(id, fundingsource, amount, params=False):
+
+def refund(tid, fundingsource, amount, params=False):
     """
     Refunds (either completely or partially) funds to
     the sending user for a transaction.
@@ -86,7 +90,7 @@ def refund(id, fundingsource, amount, params=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary with information about refund transaction.
     """
-    if not id:
+    if not tid:
         raise Exception('refund() requires parameter id')
     if not fundingsource:
         raise Exception('refund() requires parameter fundingsource')
@@ -97,7 +101,7 @@ def refund(id, fundingsource, amount, params=False):
         'oauth_token': r.settings['oauth_token'],
         'pin': r.settings['pin'],
         'fundsSource': fundingsource,
-        'transactionId': id,
+        'transactionId': tid,
         'amount': amount
     }
 
@@ -105,6 +109,7 @@ def refund(id, fundingsource, amount, params=False):
         p = p.items + params.items
 
     return r._post('/transactions/refund/', p)
+
 
 def stats(params=False):
     """
@@ -119,6 +124,6 @@ def stats(params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._get('/transactions/stats/', p)
