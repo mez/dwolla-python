@@ -19,6 +19,15 @@ from rest import r
 
 
 def create(purchaseorder, params=False):
+    """
+    Creates an off-site gateway checkout session.
+
+    :param purchaseorder: Dictionary with PO info, if you are passing in items you must provide them in a frozenset()
+    so that they can be hashed by Python's dictionary.
+    :param params: Dictionary with additional parameters.
+
+    :return: Dictionary with URL and additional checkout response info.
+    """
     if not purchaseorder:
         raise Exception('create() requires purchaseorder parameter')
     if type(purchaseorder) is dict:
@@ -41,43 +50,64 @@ def create(purchaseorder, params=False):
     id = r._post('/offsitegateway/checkouts/', p)
 
     if 'CheckoutId' in id['Response']:
-        return dict({'URL': (r.settings['host'] + 'payment/checkout/' + id['Response']['CheckoutId'])}.items() + id.items())
+        return dict({'URL': (r.settings['host'] + 'payment/checkout/' + id['Response']['CheckoutId'])}.items() + id['Response'].items())
     else:
         raise Exception('Unable to create checkout due to API error.')
 
-def get(id):
-    if not id:
-        raise Exception('get() requires id parameter')
+def get(cid):
+    """
+    Retrieves information (status, etc.) from an existing checkout
 
-    return r._get('/offsitegateway/checkouts/' + id,
+    :param cid: String with checkout ID
+    :return: Dictionary with checkout info.
+    """
+    if not cid:
+        raise Exception('get() requires cid parameter')
+
+    return r._get('/offsitegateway/checkouts/' + cid,
                      {
                          'client_id': r.settings['client_id'],
                          'client_secret': r.settings['client_secret']
                      })
 
-def complete(id):
-    if not id:
-        raise Exception('complete() requires id parameter')
+def complete(cid):
+    """
+    Completes an offsite-gateway "Pay Later" checkout session.
 
-    return r._get('/offsitegateway/checkouts/' + id + '/complete/',
+    :param cid: String with checkout ID
+    :return: None
+    """
+    if not cid:
+        raise Exception('complete() requires cid parameter')
+
+    return r._get('/offsitegateway/checkouts/' + cid + '/complete/',
                      {
                          'client_id': r.settings['client_id'],
                          'client_secret': r.settings['client_secret']
                      })
 
-def verify(sig, id, amount):
+def verify(sig, cid, amount):
+    """
+    Verifies offsite-gateway signature hash against
+    server-provided hash.
+
+    :param sig: String with server provided signature.
+    :param cid: String with checkout ID.
+    :param amount: Double with amount of checkout session.
+    :return:
+    """
     import hmac
     import hashlib
 
     if not sig:
         raise Exception('verify() requires sig parameter')
-    if not id:
-        raise Exception('verify() requires id parameter')
+    if not cid:
+        raise Exception('verify() requires cid parameter')
     if not amount:
         raise Exception('verify() requires amount parameter')
 
     # Normalize amount
-    ampstr = '%s&%.2f' % (id, amount)
+    ampstr = '%s&%.2f' % (cid, amount)
 
     # Check signature
     return hmac.new(r.settings['client_secret'], ampstr, hashlib.sha1).hexdigest() == sig
