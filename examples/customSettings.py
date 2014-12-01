@@ -5,13 +5,17 @@
  | (_| |\ V  V / (_) | | | (_| |
   \__,_| \_/\_/ \___/|_|_|\__,_|
 
-  An official requests based wrapper for the Dwolla API
+  An official requests based wrapper for the Dwolla API.
 
-  This contains the default settings for the library; you can modify
-  these values or use this dictionary as a boilerplate for your own settings values.
+  The following is a quick-start example for passing in your
+  own settings dictionary with dwolla-python.
 '''
 
-s = {
+# We now also import rest
+from dwolla import accounts, contacts, rest
+
+# These are our settings, change at will.
+mySettings = {
 
     'client_id': 'YOUR ID HERE',
     'client_secret': 'YOUR SECRET HERE',
@@ -33,11 +37,19 @@ s = {
     'rest_timeout': 15,
     'proxy': False
 
-    # Proxy must be set to a dictionary in this manner as per requests'
-    # requirements:
-    # {
-    # 'http'  : 'http://someproxy:someport',
-    # 'https' : 'https://someproxy:someport',
-    # 'ftp'   : 'ftp://someproxy:someport'
-    # }
 }
+
+# Replace rest.r with a new Rest class using the above settings
+# Now, you can use *any* module without having to repeat this step.
+
+rest.r = rest.Rest(mySettings)
+
+# Example 1: Get basic information for a user via
+# their Dwolla ID.
+
+print accounts.basic('812-121-7199')
+
+# Example 2: Get full account information for
+# the user associated with the current OAuth token
+
+print contacts.get
