@@ -209,8 +209,14 @@ This wrapper is based on [requests](http://docs.python-requests.org/) for REST c
 
 Version `2.x` initially written by [David Stancu](http://davidstancu.me) (david@dwolla.com).
 
-Versions `1.x` written by:
-* Michael Schonfeld
+Versions `1.x`:
+The old wrapper is a forked extension of Thomas Hansen's 'dwolla-python' module.
+
+- Thomas Hansen &lt;thomas.hansen@gmail.com&gt;
+- Jordan Bouvier &lt;jbouvier@gmail.com&gt;
+- Michael Schonfeld &lt;michael@dwolla.com&gt;
+- George Sibble &lt;george.sibble@ultapay.com&gt;
+- Andrey Fedorov &lt;anfedorov@gmail.com&gt;
 
 ## License
 
