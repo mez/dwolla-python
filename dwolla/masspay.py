@@ -65,7 +65,7 @@ def getjobitems(id, params=False):
     if not id:
         raise Exception('getjobitems() requires id parameter')
 
-    p = { 'oauth_token': r.settings['oauth_token'] }
+    p = {'oauth_token': r.settings['oauth_token']}
 
     if params:
         p = dict(p.items() + params.items())
