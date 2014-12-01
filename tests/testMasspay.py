@@ -1,5 +1,5 @@
 import unittest
-from dwolla import masspay, rest
+from dwolla import transactions, rest
 from mock import MagicMock
 
 

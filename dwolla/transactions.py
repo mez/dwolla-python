@@ -106,7 +106,7 @@ def refund(tid, fundingsource, amount, params=False):
     }
 
     if params:
-        p = p.items + params.items
+        p = dict(p.items() + params.items())
 
     return r._post('/transactions/refund/', p)
 

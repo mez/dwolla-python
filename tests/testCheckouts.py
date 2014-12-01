@@ -3,7 +3,7 @@ from dwolla import checkouts, rest
 from mock import MagicMock
 
 
-class TransactionsTest(unittest.TestCase):
+class CheckoutsTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
@@ -40,7 +40,7 @@ class TransactionsTest(unittest.TestCase):
 
     def testcomplete(self):
         checkouts.complete('123456')
-        print rest.r._get.assert_any_call('/offsitegateway/checkouts/123456/complete/', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
+        rest.r._get.assert_any_call('/offsitegateway/checkouts/123456/complete/', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
 
 if __name__ == '__main__':
     unittest.main()
