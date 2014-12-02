@@ -10,9 +10,11 @@
   This file contains functionality for all requests related endpoints.
 '''
 
+import __init__ as d
 from rest import r
 
-def create(sourceid, amount, params=False):
+
+def create(sourceid, amount, params=False, access_token=False):
     """
     Requests money from a user for a user associated with
     the current OAuth token.
@@ -28,7 +30,7 @@ def create(sourceid, amount, params=False):
         raise Exception('create() requires amount parameter')
 
     p = {
-        'oauth_token': r.settings['oauth_token'],
+        'oauth_token': access_token if access_token else d.access_token,
         'sourceId': sourceid,
         'amount': amount
     }
@@ -38,7 +40,8 @@ def create(sourceid, amount, params=False):
 
     return r._post('/requests/', p)
 
-def get(params=False):
+
+def get(params=False, access_token=False):
     """
     Retrieves a list of pending money requests for the user
     associated with the current OAuth token.
@@ -46,16 +49,15 @@ def get(params=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary with pending money requests and relevant data.
     """
-    p = {
-        'oauth_token': r.settings['oauth_token']
-    }
+    p = {'oauth_token': access_token if access_token else d.access_token}
 
     if params:
         p = dict(p.items() + params.items())
 
     return r._get('/requests/', params=p)
 
-def info(requestid):
+
+def info(requestid, access_token=False):
     """
     Retrieves additional information about a pending money
     request.
@@ -66,9 +68,10 @@ def info(requestid):
     if not requestid:
         raise Exception('info() requires requestid parameter')
 
-    return r._get('/requests/' + requestid, params={'oauth_token': r.settings['oauth_token']})
+    return r._get('/requests/' + requestid, params={'oauth_token': access_token if access_token else d.access_token})
 
-def cancel(requestid):
+
+def cancel(requestid, access_token=False):
     """
     Cancels a pending money request.
 
@@ -78,9 +81,10 @@ def cancel(requestid):
     if not requestid:
         raise Exception('cancel() requires requestid parameter')
 
-    return r._post('/requests/' + requestid + '/cancel/', params={'oauth_token': r.settings['oauth_token']})
+    return r._post('/requests/' + requestid + '/cancel/', params={'oauth_token': access_token if access_token else d.access_token})
 
-def fulfill(requestid, amount, params=False):
+
+def fulfill(requestid, amount, params=False, access_token=False):
     """
     Fulfills a pending money request.
 
@@ -94,9 +98,7 @@ def fulfill(requestid, amount, params=False):
     if not amount:
         raise Exception('fulfill() requires amount parameter')
 
-    p = {
-        'oauth_token': r.settings['oauth_token']
-    }
+    p = {'oauth_token': access_token if access_token else d.access_token}
 
     if params:
         p = dict(p.items() + params.items())

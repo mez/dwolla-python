@@ -10,9 +10,11 @@
   This file contains functionality for all funding source related endpoints.
 '''
 
+import __init__ as d
 from rest import r
 
-def info(fid):
+
+def info(fid, access_token=False):
     """
     Retrieves information about a funding source by ID.
 
@@ -22,9 +24,10 @@ def info(fid):
     if not fid:
         raise Exception('info() requires fid parameter')
 
-    return r._get('/fundingsources/' + fid, {'oauth_token': r.settings['oauth_token']})
+    return r._get('/fundingsources/' + fid, {'oauth_token': access_token if access_token else d.access_token})
 
-def get(params=False):
+
+def get(params=False, access_token=False):
     """
     Returns a list of funding sources associated to the account
     under the current OAuth token.
@@ -32,16 +35,15 @@ def get(params=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary of funding sources.
     """
-    p = {
-        'oauth_token': r.settings['oauth_token']
-    }
+    p = {'oauth_token': access_token if access_token else d.access_token}
 
     if params:
         p = dict(params.items() + p.items())
 
     return r._get('/fundingsources/', p)
 
-def add(account, routing, type, name):
+
+def add(account, routing, type, name, access_token=False):
     """
     Adds a funding source to the account under the current
     OAuth token.
@@ -62,15 +64,16 @@ def add(account, routing, type, name):
         raise Exception('add() requires name parameter')
 
     return r._post('/fundingsources/',
-                      {
-                          'oauth_token': r.settings['oauth_token'],
-                          'account_number': account,
-                          'routing_number': routing,
-                          'account_type': type,
-                          'account_name': name
-                      })
+                   {
+                       'oauth_token': access_token if access_token else d.access_token,
+                       'account_number': account,
+                       'routing_number': routing,
+                       'account_type': type,
+                       'account_name': name
+                   })
 
-def verify(d1, d2, fid):
+
+def verify(d1, d2, fid, access_token=False):
     """
     Verifies a funding source for the account associated
     with the funding ID under the current OAuth token via
@@ -88,13 +91,14 @@ def verify(d1, d2, fid):
         raise Exception('verify() requires fid parameter')
 
     return r._post('/fundingsources/' + fid,
-                      {
-                          'oauth_token': r.settings['oauth_token'],
-                          'deposit1': d1,
-                          'deposit2': d2
-                      })
+                   {
+                       'oauth_token': access_token if access_token else d.access_token,
+                       'deposit1': d1,
+                       'deposit2': d2
+                   })
 
-def withdraw(amount, fid):
+
+def withdraw(amount, fid, access_token=False, pin=False):
     """
     Withdraws funds from a Dwolla account to the funding source
     associated with the passed ID, under the account associated
@@ -110,13 +114,14 @@ def withdraw(amount, fid):
         raise Exception('withdraw() requires fid parameter')
 
     return r._post('/fundingsources/'+ fid + '/withdraw/',
-                      {
-                          'oauth_token': r.settings['oauth_token'],
-                          'pin': r.settings['pin'],
-                          'amount': amount
-                      })
+                   {
+                       'oauth_token': access_token if access_token else d.access_token,
+                       'pin': pin if pin else d.pin,
+                       'amount': amount
+                   })
 
-def deposit(amount, fid):
+
+def deposit(amount, fid, access_token=False, pin=False):
     """
     Deposits funds into the Dwolla account associated with the
     OAuth token from the funding ID associated with the passed
@@ -132,8 +137,8 @@ def deposit(amount, fid):
         raise Exception('deposit() requires fid parameter')
 
     return r._post('/fundingsources/' + fid + '/deposit/',
-                      {
-                          'oauth_token': r.settings['oauth_token'],
-                          'pin': r.settings['pin'],
-                          'amount': amount
-                      })
+                   {
+                       'oauth_token': access_token if access_token else d.access_token,
+                       'pin': pin if pin else d.pin,
+                       'amount': amount
+                   })

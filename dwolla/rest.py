@@ -17,13 +17,13 @@
   Link -- http://developers.dwolla.com
 '''
 
-import requests
+import __init__ as d
 import json
+import requests
 
-import _settings
 
 class Rest(object):
-    def __init__(self, settings=False):
+    def __init__(self):
         """
         Constructor.
 
@@ -31,10 +31,10 @@ class Rest(object):
                          using _settings.py is not desired
         :return: None (__new__() returns the new instance ;))
         """
-        self.settings = settings if settings else _settings.s
-        self.settings['host'] = self.settings['sandbox_host'] if self.settings['sandbox'] else self.settings['production_host']
+        d.host = d.sandbox_host if d.sandbox else d.production_host
 
-    def _parse(self, response):
+    @staticmethod
+    def _parse(response):
         """
         Parses the Dwolla API response.
 
@@ -47,43 +47,42 @@ class Rest(object):
         else:
             return response['Response']
 
-    def _post(self, endpoint, params, customPostfix=False, dwollaParse=True):
+    def _post(self, endpoint, params, custompostfix=False, dwollaparse=True):
         """
         Wrapper for requests' POST functionality.
 
         :param endpoint: String containing endpoint desired.
         :param params: Dictionary containing parameters for request.
-        :param customPostfix: String containing custom OAuth postfix (for special endpoints).
-        :param dwollaParse: Boolean deciding whether or not to call self._parse().
+        :param custompostfix: String containing custom OAuth postfix (for special endpoints).
+        :param dwollaparse: Boolean deciding whether or not to call self._parse().
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.post(self.settings['host']
-                                 + (customPostfix if customPostfix else self.settings['default_postfix'])
-                                 + endpoint, json.dumps(params), proxies=self.settings['proxy'],
+            resp = requests.post(d.host + (custompostfix if custompostfix else d.default_postfix)
+                                 + endpoint, json.dumps(params), proxies=d.proxy,
                                  headers={'User-Agent': 'dwolla-python/2.x', 'Content-Type': 'application/json'})
         except Exception as e:
-            if self.settings['debug']:
+            if d.debug:
                 print "dwolla-python: An error has occurred while making a POST request:\n" + e.message
         else:
-            return self._parse(json.loads(resp.text)) if dwollaParse else json.loads(resp.text)
+            return self._parse(json.loads(resp.text)) if dwollaparse else json.loads(resp.text)
 
-    def _get(self, endpoint, params, dwollaParse=True):
+    def _get(self, endpoint, params, dwollaparse=True):
         """
         Wrapper for requests' GET functionality.
 
         :param endpoint: String containing endpoint desired.
         :param params: Dictionary containing parameters for request
-        :param dwollaParse: Boolean deciding whether or not to call self._parse().
+        :param dwollaparse: Boolean deciding whether or not to call self._parse().
         :return: Dictionary String containing endpoint desired. containing API response.
         """
         try:
-            resp = requests.get(self.settings['host'] + self.settings['default_postfix'] + endpoint, params=params,
-                                proxies=self.settings['proxy'], headers={'User-Agent': 'dwolla-python/2.x'})
+            resp = requests.get(d.host + d.default_postfix + endpoint, params=params,
+                                proxies=d.proxy, headers={'User-Agent': 'dwolla-python/2.x'})
         except Exception as e:
-            if self.settings['debug']:
+            if d.debug:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message
         else:
-            return self._parse(json.loads(resp.text)) if dwollaParse else json.loads(resp.json())
+            return self._parse(json.loads(resp.text)) if dwollaparse else json.loads(resp.json())
 
 r = Rest()

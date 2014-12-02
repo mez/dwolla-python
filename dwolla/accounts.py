@@ -10,6 +10,7 @@
   This file contains functionality for all accounts related endpoints.
 '''
 
+import __init__ as d
 from rest import r
 
 def basic(aid):
@@ -25,11 +26,11 @@ def basic(aid):
 
     return r._get('/users/' + aid,
                      {
-                         'client_id': r.settings['client_id'],
-                         'client_secret': r.settings['client_secret']
+                         'client_id': d.client_id,
+                         'client_secret': d.client_secret
                      })
 
-def full():
+def full(access_token=False):
     """
     Returns full account information for the user associated
     with the currently set OAuth token.
@@ -38,17 +39,17 @@ def full():
     """
     return r._get('/users/',
                      {
-                         'oauth_token': r.settings['oauth_token']
+                         'oauth_token': access_token if access_token else d.access_token
                      })
 
-def balance():
+def balance(access_token=False):
     """
     Gets balance for the account associated with the
     currently set OAuth token.
 
     :return: Balance
     """
-    return r._get('/balance/', {'oauth_token': r.settings['oauth_token']})
+    return r._get('/balance/', {'oauth_token': access_token if access_token else d.access_token})
 
 def nearby(lat, lon):
     """
@@ -65,24 +66,24 @@ def nearby(lat, lon):
 
     return r._get('/users/nearby/',
                      {
-                         'client_id': r.settings['client_id'],
-                         'client_secret': r.settings['client_secret'],
+                         'client_id': d.client_id,
+                         'client_secret': d.client_secret,
                          'latitude': lat,
                          'longitude': lon
                      })
 
-def autowithdrawalstatus():
+def autowithdrawalstatus(access_token=False):
     """
     Gets auto withdrawal status for the account associated
     with the currently set OAuth token.
     :return: AW status for account.
     """
     return r._get('/accounts/features/auto_withdrawl/',
-                     {
-                         'oauth_token': r.settings['oauth_token']
-                     })
+                  {
+                      'oauth_token': access_token if access_token else d.access_token
+                  })
 
-def toggleautowithdrawalstatus(status, fid):
+def toggleautowithdrawalstatus(status, fid, access_token=False):
     """
     Sets auto-withdrawal status of the account associated
     with the current OAuth token under the specified
@@ -97,11 +98,11 @@ def toggleautowithdrawalstatus(status, fid):
         raise Exception('toggleautowithdrawlstatus() requires fid parameter')
 
     return r._post('/accounts/features/auto_withdrawl',
-                      {
-                          'oauth_token': r.settings['oauth_token'],
-                          'enabled': status,
-                          'fundingId': fid
-                      })
+                   {
+                       'oauth_token': access_token if access_token else d.access_token,
+                       'enabled': status,
+                       'fundingId': fid
+                   })
 
 
 

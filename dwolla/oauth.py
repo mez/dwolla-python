@@ -10,6 +10,7 @@
   This file contains functionality for all OAuth related endpoints.
 '''
 
+import __init__ as d
 from rest import r
 
 def genauthurl(redirect=False, scope=False):
@@ -24,13 +25,14 @@ def genauthurl(redirect=False, scope=False):
     :return: String with URL
     """
     if not scope:
-        scope = r.settings['oauth_scope']
+        scope = d.oauth_scope
 
-    return r.settings['host'] \
-    +'oauth/v2/authenticate?client_id=' \
-    + r.settings['client_id'] \
-    + '&response_type=code&scope=' + scope \
-    + (("&redirect_uri=" + redirect) if redirect else '')
+    return d.host \
+        + 'oauth/v2/authenticate?client_id=' \
+        + d.client_id \
+        + '&response_type=code&scope=' + scope \
+        + (("&redirect_uri=" + redirect) if redirect else '')
+
 
 def get(code, redirect=False):
     """
@@ -45,8 +47,8 @@ def get(code, redirect=False):
         raise Exception('get() requires code parameter')
 
     p = {
-        'client_id': r.settings['client_id'],
-        'client_secret': r.settings['client_secret'],
+        'client_id': d.client_id,
+        'client_secret': d.client_secret,
         'grant_type': 'authorization_code',
         'code': code
     }
@@ -67,8 +69,8 @@ def refresh(refreshtoken):
         raise Exception('refresh() requires refreshtoken parameter')
 
     p = {
-        'client_id': r.settings['client_id'],
-        'client_secret': r.settings['client_secret'],
+        'client_id': d.client_id,
+        'client_secret': d.client_secret,
         'grant_type': 'refresh_token',
         'refresh_token': refreshtoken
     }
