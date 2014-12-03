@@ -10,7 +10,7 @@
   This file contains functionality for all contact related endpoints.
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 
@@ -21,7 +21,7 @@ def get(params=False, access_token=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary with contacts.
     """
-    p = {'oauth_token': access_token if access_token else d.access_token}
+    p = {'oauth_token': access_token if access_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())
@@ -44,8 +44,8 @@ def nearby(lat, lon, params=False):
         raise Exception('nearby() requires lon parameter')
 
     p = {
-        'client_id': d.client_id,
-        'client_secret': d.client_secret,
+        'client_id': client_id,
+        'client_secret': client_secret,
         'latitude': lat,
         'longitude': lon
     }

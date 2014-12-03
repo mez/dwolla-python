@@ -10,7 +10,7 @@
   This file contains functionality for all transactions related endpoints.
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 
@@ -19,7 +19,7 @@ def send(destinationid, amount, params=False, access_token=False, pin=False):
     Sends money to the specified destination user.
 
     :param destinationid: String of Dwolla ID to send funds to.
-    :param amount: Double of amount to send.
+    :param amount: Double of amount to sen
     :param params: Dictionary of additional parameters
     :return: Integer of transaction ID
     """
@@ -29,8 +29,8 @@ def send(destinationid, amount, params=False, access_token=False, pin=False):
         raise Exception('send() requires amount parameter')
 
     p = {
-        'oauth_token': access_token if access_token else d.access_token,
-        'pin': pin if pin else d.pin,
+        'oauth_token': access_token if access_token else access_token,
+        'pin': pin if pin else pin,
         'destinationId': destinationid,
         'amount': amount
     }
@@ -50,9 +50,9 @@ def get(params=False, access_token=False):
     :return: Dictionary with transactions
     """
     p = {
-        'oauth_token': access_token if access_token else d.access_token,
-        'client_id': d.client_id,
-        'client_secret': d.client_secret
+        'oauth_token': access_token if access_token else access_token,
+        'client_id': client_id,
+        'client_secret': client_secret
     }
 
     if params:
@@ -74,9 +74,9 @@ def info(tid, access_token=False):
 
     return r._get('/transactions/' + tid,
                   {
-                      'oauth_token': access_token if access_token else d.access_token,
-                      'client_id': d.client_id,
-                      'client_secret': d.client_secret
+                      'oauth_token': access_token if access_token else access_token,
+                      'client_id': client_id,
+                      'client_secret': client_secret
                   })
 
 
@@ -87,7 +87,7 @@ def refund(tid, fundingsource, amount, params=False, access_token=False, pin=Fal
 
     :param id: String with transaction ID.
     :param fundingsource: String with funding source for refund transaction.
-    :param amount: Double with amount to refund.
+    :param amount: Double with amount to refun
     :param params: Dictionary with additional parameters.
     :return: Dictionary with information about refund transaction.
     """
@@ -99,8 +99,8 @@ def refund(tid, fundingsource, amount, params=False, access_token=False, pin=Fal
         raise Exception('refund() requires parameter amount')
 
     p = {
-        'oauth_token': access_token if access_token else d.access_token,
-        'pin': pin if pin else d.pin,
+        'oauth_token': access_token if access_token else access_token,
+        'pin': pin if pin else pin,
         'fundsSource': fundingsource,
         'transactionId': tid,
         'amount': amount
@@ -120,7 +120,7 @@ def stats(params=False, access_token=False):
     :param params: Dictionary with additional parameters
     :return: Dictionary with transaction statistics
     """
-    p = {'oauth_token': access_token if access_token else d.access_token}
+    p = {'oauth_token': access_token if access_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())

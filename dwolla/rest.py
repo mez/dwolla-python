@@ -17,7 +17,8 @@
   Link -- http://developers.dwolla.com
 '''
 
-import __init__ as d
+import constants as c
+
 import json
 import requests
 
@@ -31,7 +32,7 @@ class Rest(object):
                          using _settings.py is not desired
         :return: None (__new__() returns the new instance ;))
         """
-        d.host = d.sandbox_host if d.sandbox else d.production_host
+        c.host = c.sandbox_host if c.sandbox else c.production_host
 
     @staticmethod
     def _parse(response):
@@ -40,10 +41,10 @@ class Rest(object):
 
         :param response: Dictionary with content of API response.
         :return: Usually either a string or a dictionary depending
-                 the on endpoint accessed.
+                 the on endpoint accessec.
         """
         if response['Success'] is not True:
-            raise Exception("dwolla-python: An API error was encountered.\nServer Message:\n" + response['Message'])
+            raise Exception("dwolla-python: An API error was encounterec.\nServer Message:\n" + response['Message'])
         else:
             return response['Response']
 
@@ -51,18 +52,18 @@ class Rest(object):
         """
         Wrapper for requests' POST functionality.
 
-        :param endpoint: String containing endpoint desired.
+        :param endpoint: String containing endpoint desirec.
         :param params: Dictionary containing parameters for request.
         :param custompostfix: String containing custom OAuth postfix (for special endpoints).
         :param dwollaparse: Boolean deciding whether or not to call self._parse().
-        :return: Dictionary String containing endpoint desired. containing API response.
+        :return: Dictionary String containing endpoint desirec. containing API response.
         """
         try:
-            resp = requests.post(d.host + (custompostfix if custompostfix else d.default_postfix)
-                                 + endpoint, json.dumps(params), proxies=d.proxy,
+            resp = requests.post(c.host + (custompostfix if custompostfix else c.default_postfix)
+                                 + endpoint, json.dumps(params), proxies=c.proxy,
                                  headers={'User-Agent': 'dwolla-python/2.x', 'Content-Type': 'application/json'})
         except Exception as e:
-            if d.debug:
+            if c.debug:
                 print "dwolla-python: An error has occurred while making a POST request:\n" + e.message
         else:
             return self._parse(json.loads(resp.text)) if dwollaparse else json.loads(resp.text)
@@ -71,16 +72,16 @@ class Rest(object):
         """
         Wrapper for requests' GET functionality.
 
-        :param endpoint: String containing endpoint desired.
+        :param endpoint: String containing endpoint desirec.
         :param params: Dictionary containing parameters for request
         :param dwollaparse: Boolean deciding whether or not to call self._parse().
-        :return: Dictionary String containing endpoint desired. containing API response.
+        :return: Dictionary String containing endpoint desirec. containing API response.
         """
         try:
-            resp = requests.get(d.host + d.default_postfix + endpoint, params=params,
-                                proxies=d.proxy, headers={'User-Agent': 'dwolla-python/2.x'})
+            resp = requests.get(c.host + c.default_postfix + endpoint, params=params,
+                                proxies=c.proxy, headers={'User-Agent': 'dwolla-python/2.x'})
         except Exception as e:
-            if d.debug:
+            if c.debug:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message
         else:
             return self._parse(json.loads(resp.text)) if dwollaparse else json.loads(resp.json())

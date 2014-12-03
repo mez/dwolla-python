@@ -10,7 +10,7 @@
   This file contains functionality for all requests related endpoints.
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 
@@ -30,7 +30,7 @@ def create(sourceid, amount, params=False, access_token=False):
         raise Exception('create() requires amount parameter')
 
     p = {
-        'oauth_token': access_token if access_token else d.access_token,
+        'oauth_token': access_token if access_token else access_token,
         'sourceId': sourceid,
         'amount': amount
     }
@@ -49,7 +49,7 @@ def get(params=False, access_token=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary with pending money requests and relevant data.
     """
-    p = {'oauth_token': access_token if access_token else d.access_token}
+    p = {'oauth_token': access_token if access_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())
@@ -68,7 +68,7 @@ def info(requestid, access_token=False):
     if not requestid:
         raise Exception('info() requires requestid parameter')
 
-    return r._get('/requests/' + requestid, params={'oauth_token': access_token if access_token else d.access_token})
+    return r._get('/requests/' + requestid, params={'oauth_token': access_token if access_token else access_token})
 
 
 def cancel(requestid, access_token=False):
@@ -81,7 +81,7 @@ def cancel(requestid, access_token=False):
     if not requestid:
         raise Exception('cancel() requires requestid parameter')
 
-    return r._post('/requests/' + requestid + '/cancel/', params={'oauth_token': access_token if access_token else d.access_token})
+    return r._post('/requests/' + requestid + '/cancel/', params={'oauth_token': access_token if access_token else access_token})
 
 
 def fulfill(requestid, amount, params=False, access_token=False):
@@ -98,7 +98,7 @@ def fulfill(requestid, amount, params=False, access_token=False):
     if not amount:
         raise Exception('fulfill() requires amount parameter')
 
-    p = {'oauth_token': access_token if access_token else d.access_token}
+    p = {'oauth_token': access_token if access_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())

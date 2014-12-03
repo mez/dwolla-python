@@ -10,14 +10,14 @@
   This file contains functionality for all OAuth related endpoints.
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 def genauthurl(redirect=False, scope=False):
     """
     Returns an OAuth permissions page URL. If no redirect is set,
-    the redirect in the Dwolla Application Settings will be used.
-    If no scope is set, the scope in the settings object will be used.
+    the redirect in the Dwolla Application Settings will be use
+    If no scope is set, the scope in the settings object will be use
 
     :param redirect: String with redirect destination.
     :param scope: OAuth scope string to override default scope in settings object.
@@ -25,11 +25,11 @@ def genauthurl(redirect=False, scope=False):
     :return: String with URL
     """
     if not scope:
-        scope = d.oauth_scope
+        scope = oauth_scope
 
-    return d.host \
+    return host \
         + 'oauth/v2/authenticate?client_id=' \
-        + d.client_id \
+        + client_id \
         + '&response_type=code&scope=' + scope \
         + (("&redirect_uri=" + redirect) if redirect else '')
 
@@ -37,7 +37,7 @@ def genauthurl(redirect=False, scope=False):
 def get(code, redirect=False):
     """
     Returns an OAuth token + refresh pair in an array. If no redirect
-    is set, the redirect in the Dwolla Application Settings will be used.
+    is set, the redirect in the Dwolla Application Settings will be use
 
     :param code: Code from redirect response.
     :param redirect: String with redirect destination.
@@ -47,8 +47,8 @@ def get(code, redirect=False):
         raise Exception('get() requires code parameter')
 
     p = {
-        'client_id': d.client_id,
-        'client_secret': d.client_secret,
+        'client_id': client_id,
+        'client_secret': client_secret,
         'grant_type': 'authorization_code',
         'code': code
     }
@@ -69,8 +69,8 @@ def refresh(refreshtoken):
         raise Exception('refresh() requires refreshtoken parameter')
 
     p = {
-        'client_id': d.client_id,
-        'client_secret': d.client_secret,
+        'client_id': client_id,
+        'client_secret': client_secret,
         'grant_type': 'refresh_token',
         'refresh_token': refreshtoken
     }

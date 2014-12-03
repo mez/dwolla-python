@@ -10,7 +10,7 @@
   This file contains functionality for all accounts related endpoints.
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 def basic(aid):
@@ -26,8 +26,8 @@ def basic(aid):
 
     return r._get('/users/' + aid,
                      {
-                         'client_id': d.client_id,
-                         'client_secret': d.client_secret
+                         'client_id': client_id,
+                         'client_secret': client_secret
                      })
 
 def full(access_token=False):
@@ -39,7 +39,7 @@ def full(access_token=False):
     """
     return r._get('/users/',
                      {
-                         'oauth_token': access_token if access_token else d.access_token
+                         'oauth_token': access_token if access_token else access_token
                      })
 
 def balance(access_token=False):
@@ -49,7 +49,7 @@ def balance(access_token=False):
 
     :return: Balance
     """
-    return r._get('/balance/', {'oauth_token': access_token if access_token else d.access_token})
+    return r._get('/balance/', {'oauth_token': access_token if access_token else access_token})
 
 def nearby(lat, lon):
     """
@@ -66,8 +66,8 @@ def nearby(lat, lon):
 
     return r._get('/users/nearby/',
                      {
-                         'client_id': d.client_id,
-                         'client_secret': d.client_secret,
+                         'client_id': client_id,
+                         'client_secret': client_secret,
                          'latitude': lat,
                          'longitude': lon
                      })
@@ -80,7 +80,7 @@ def autowithdrawalstatus(access_token=False):
     """
     return r._get('/accounts/features/auto_withdrawl/',
                   {
-                      'oauth_token': access_token if access_token else d.access_token
+                      'oauth_token': access_token if access_token else access_token
                   })
 
 def toggleautowithdrawalstatus(status, fid, access_token=False):
@@ -99,7 +99,7 @@ def toggleautowithdrawalstatus(status, fid, access_token=False):
 
     return r._post('/accounts/features/auto_withdrawl',
                    {
-                       'oauth_token': access_token if access_token else d.access_token,
+                       'oauth_token': access_token if access_token else access_token,
                        'enabled': status,
                        'fundingId': fid
                    })

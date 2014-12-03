@@ -15,7 +15,7 @@
   Further information is available on: https://docs.dwolla.com
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 
@@ -40,8 +40,8 @@ def create(purchaseorder, params=False):
         raise Exception('create() requires purchaseorder to be of type dict')
 
     p = {
-        'client_id': d.client_id,
-        'client_secret': d.client_secret,
+        'client_id': client_id,
+        'client_secret': client_secret,
         'purchaseOrder': purchaseorder
     }
 
@@ -67,8 +67,8 @@ def get(cid):
 
     return r._get('/offsitegateway/checkouts/' + cid,
                   {
-                      'client_id': d.client_id,
-                      'client_secret': d.client_secret
+                      'client_id': client_id,
+                      'client_secret': client_secret
                   })
 
 def complete(cid):
@@ -83,8 +83,8 @@ def complete(cid):
 
     return r._get('/offsitegateway/checkouts/' + cid + '/complete/',
                   {
-                      'client_id': d.client_id,
-                      'client_secret': d.client_secret
+                      'client_id': client_id,
+                      'client_secret': client_secret
                   })
 
 def verify(sig, cid, amount):
@@ -111,7 +111,7 @@ def verify(sig, cid, amount):
     ampstr = '%s&%.2f' % (cid, amount)
 
     # Check signature
-    return hmac.new(d.client_secret, ampstr, hashlib.sha1).hexdigest() == sig
+    return hmac.new(client_secret, ampstr, hashlib.sha1).hexdigest() == sig
 
 
 

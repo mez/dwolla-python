@@ -10,7 +10,7 @@
   This file contains functionality for all funding source related endpoints.
 '''
 
-import __init__ as d
+from constants import *
 from rest import r
 
 
@@ -24,7 +24,7 @@ def info(fid, access_token=False):
     if not fid:
         raise Exception('info() requires fid parameter')
 
-    return r._get('/fundingsources/' + fid, {'oauth_token': access_token if access_token else d.access_token})
+    return r._get('/fundingsources/' + fid, {'oauth_token': access_token if access_token else access_token})
 
 
 def get(params=False, access_token=False):
@@ -35,7 +35,7 @@ def get(params=False, access_token=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary of funding sources.
     """
-    p = {'oauth_token': access_token if access_token else d.access_token}
+    p = {'oauth_token': access_token if access_token else access_token}
 
     if params:
         p = dict(params.items() + p.items())
@@ -65,7 +65,7 @@ def add(account, routing, type, name, access_token=False):
 
     return r._post('/fundingsources/',
                    {
-                       'oauth_token': access_token if access_token else d.access_token,
+                       'oauth_token': access_token if access_token else access_token,
                        'account_number': account,
                        'routing_number': routing,
                        'account_type': type,
@@ -92,7 +92,7 @@ def verify(d1, d2, fid, access_token=False):
 
     return r._post('/fundingsources/' + fid,
                    {
-                       'oauth_token': access_token if access_token else d.access_token,
+                       'oauth_token': access_token if access_token else access_token,
                        'deposit1': d1,
                        'deposit2': d2
                    })
@@ -115,8 +115,8 @@ def withdraw(amount, fid, access_token=False, pin=False):
 
     return r._post('/fundingsources/'+ fid + '/withdraw/',
                    {
-                       'oauth_token': access_token if access_token else d.access_token,
-                       'pin': pin if pin else d.pin,
+                       'oauth_token': access_token if access_token else access_token,
+                       'pin': pin if pin else pin,
                        'amount': amount
                    })
 
@@ -138,7 +138,7 @@ def deposit(amount, fid, access_token=False, pin=False):
 
     return r._post('/fundingsources/' + fid + '/deposit/',
                    {
-                       'oauth_token': access_token if access_token else d.access_token,
-                       'pin': pin if pin else d.pin,
+                       'oauth_token': access_token if access_token else access_token,
+                       'pin': pin if pin else pin,
                        'amount': amount
                    })
