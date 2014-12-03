@@ -14,7 +14,7 @@ from constants import *
 from rest import r
 
 
-def send(destinationid, amount, params=False, access_token=False, pin=False):
+def send(destinationid, amount, params=False, alternate_token=False, alternate_pin=False):
     """
     Sends money to the specified destination user.
 
@@ -29,8 +29,8 @@ def send(destinationid, amount, params=False, access_token=False, pin=False):
         raise Exception('send() requires amount parameter')
 
     p = {
-        'oauth_token': access_token if access_token else access_token,
-        'pin': pin if pin else pin,
+        'oauth_token': alternate_token if alternate_token else access_token,
+        'pin': alternate_pin if alternate_pin else pin,
         'destinationId': destinationid,
         'amount': amount
     }
@@ -41,7 +41,7 @@ def send(destinationid, amount, params=False, access_token=False, pin=False):
     return r._post('/transactions/send/', p)
 
 
-def get(params=False, access_token=False):
+def get(params=False, alternate_token=False):
     """
     Lists transactions for the user associated with
     the currently set OAuth token.
@@ -50,7 +50,7 @@ def get(params=False, access_token=False):
     :return: Dictionary with transactions
     """
     p = {
-        'oauth_token': access_token if access_token else access_token,
+        'oauth_token': alternate_token if alternate_token else access_token,
         'client_id': client_id,
         'client_secret': client_secret
     }
@@ -61,7 +61,7 @@ def get(params=False, access_token=False):
     return r._get('/transactions/', p)
 
 
-def info(tid, access_token=False):
+def info(tid, alternate_token=False):
     """
     Returns transaction information for the transaction
     associated with the passed transaction ID
@@ -74,13 +74,13 @@ def info(tid, access_token=False):
 
     return r._get('/transactions/' + tid,
                   {
-                      'oauth_token': access_token if access_token else access_token,
+                      'oauth_token': alternate_token if alternate_token else access_token,
                       'client_id': client_id,
                       'client_secret': client_secret
                   })
 
 
-def refund(tid, fundingsource, amount, params=False, access_token=False, pin=False):
+def refund(tid, fundingsource, amount, params=False, alternate_token=False, alternate_pin=False):
     """
     Refunds (either completely or partially) funds to
     the sending user for a transaction.
@@ -99,8 +99,8 @@ def refund(tid, fundingsource, amount, params=False, access_token=False, pin=Fal
         raise Exception('refund() requires parameter amount')
 
     p = {
-        'oauth_token': access_token if access_token else access_token,
-        'pin': pin if pin else pin,
+        'oauth_token': alternate_token if alternate_token else access_token,
+        'pin': alternate_pin if alternate_pin else pin,
         'fundsSource': fundingsource,
         'transactionId': tid,
         'amount': amount
@@ -112,7 +112,7 @@ def refund(tid, fundingsource, amount, params=False, access_token=False, pin=Fal
     return r._post('/transactions/refund/', p)
 
 
-def stats(params=False, access_token=False):
+def stats(params=False, alternate_token=False):
     """
     Retrieves transaction statistics for
     the user associated with the current OAuth token.
@@ -120,7 +120,7 @@ def stats(params=False, access_token=False):
     :param params: Dictionary with additional parameters
     :return: Dictionary with transaction statistics
     """
-    p = {'oauth_token': access_token if access_token else access_token}
+    p = {'oauth_token': alternate_token if alternate_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())

@@ -7,13 +7,14 @@ class FundingSourcesTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
-        rest.r.settings['client_id'] = "SOME ID"
-        rest.r.settings['client_secret'] = "SOME ID"
-        rest.r.settings['oauth_token'] = "AN OAUTH TOKEN"
-        rest.r.settings['pin'] = 1234;
+        fundingsources.client_id = "SOME ID"
+        fundingsources.client_secret = "SOME ID"
+        fundingsources.access_token = "AN OAUTH TOKEN"
+        fundingsources.pin = 1234
 
     def testinfo(self):
         fundingsources.info('123456')
+        print rest.r._get.mock_calls
         rest.r._get.assert_any_call('/fundingsources/123456', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testget(self):

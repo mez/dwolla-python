@@ -14,7 +14,7 @@ from constants import *
 from rest import r
 
 
-def info(fid, access_token=False):
+def info(fid, alternate_token=False):
     """
     Retrieves information about a funding source by ID.
 
@@ -24,10 +24,10 @@ def info(fid, access_token=False):
     if not fid:
         raise Exception('info() requires fid parameter')
 
-    return r._get('/fundingsources/' + fid, {'oauth_token': access_token if access_token else access_token})
+    return r._get('/fundingsources/' + fid, {'oauth_token': alternate_token if alternate_token else access_token })
 
 
-def get(params=False, access_token=False):
+def get(params=False, alternate_token=False):
     """
     Returns a list of funding sources associated to the account
     under the current OAuth token.
@@ -35,7 +35,7 @@ def get(params=False, access_token=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary of funding sources.
     """
-    p = {'oauth_token': access_token if access_token else access_token}
+    p = {'oauth_token': alternate_token if alternate_token else access_token }
 
     if params:
         p = dict(params.items() + p.items())
@@ -43,7 +43,7 @@ def get(params=False, access_token=False):
     return r._get('/fundingsources/', p)
 
 
-def add(account, routing, type, name, access_token=False):
+def add(account, routing, type, name, alternate_token=False):
     """
     Adds a funding source to the account under the current
     OAuth token.
@@ -65,7 +65,7 @@ def add(account, routing, type, name, access_token=False):
 
     return r._post('/fundingsources/',
                    {
-                       'oauth_token': access_token if access_token else access_token,
+                       'oauth_token': alternate_token if alternate_token else access_token ,
                        'account_number': account,
                        'routing_number': routing,
                        'account_type': type,
@@ -73,7 +73,7 @@ def add(account, routing, type, name, access_token=False):
                    })
 
 
-def verify(d1, d2, fid, access_token=False):
+def verify(d1, d2, fid, alternate_token=False):
     """
     Verifies a funding source for the account associated
     with the funding ID under the current OAuth token via
@@ -92,13 +92,13 @@ def verify(d1, d2, fid, access_token=False):
 
     return r._post('/fundingsources/' + fid,
                    {
-                       'oauth_token': access_token if access_token else access_token,
+                       'oauth_token': alternate_token if alternate_token else access_token ,
                        'deposit1': d1,
                        'deposit2': d2
                    })
 
 
-def withdraw(amount, fid, access_token=False, pin=False):
+def withdraw(amount, fid, alternate_token=False, alternate_pin=False):
     """
     Withdraws funds from a Dwolla account to the funding source
     associated with the passed ID, under the account associated
@@ -115,13 +115,13 @@ def withdraw(amount, fid, access_token=False, pin=False):
 
     return r._post('/fundingsources/'+ fid + '/withdraw/',
                    {
-                       'oauth_token': access_token if access_token else access_token,
-                       'pin': pin if pin else pin,
+                       'oauth_token': alternate_token if alternate_token else access_token ,
+                       'pin': alternate_pin if alternate_pin else pin,
                        'amount': amount
                    })
 
 
-def deposit(amount, fid, access_token=False, pin=False):
+def deposit(amount, fid, alternate_token=False, alternate_pin=False):
     """
     Deposits funds into the Dwolla account associated with the
     OAuth token from the funding ID associated with the passed
@@ -138,7 +138,7 @@ def deposit(amount, fid, access_token=False, pin=False):
 
     return r._post('/fundingsources/' + fid + '/deposit/',
                    {
-                       'oauth_token': access_token if access_token else access_token,
-                       'pin': pin if pin else pin,
+                       'oauth_token': alternate_token if alternate_token else access_token ,
+                       'pin': alternate_pin if alternate_pin else pin,
                        'amount': amount
                    })

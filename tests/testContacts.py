@@ -1,5 +1,5 @@
 import unittest
-from dwolla import contacts, rest
+from dwolla import rest, contacts
 from mock import MagicMock
 
 
@@ -7,9 +7,9 @@ class ContactsTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
-        rest.r.settings['client_id'] = "SOME ID"
-        rest.r.settings['client_secret'] = "SOME ID"
-        rest.r.settings['oauth_token'] = "AN OAUTH TOKEN"
+        contacts.client_id = "SOME ID"
+        contacts.client_secret = "SOME ID"
+        contacts.access_token = "AN OAUTH TOKEN"
 
     def testget(self):
         contacts.get({'a': 'parameter'})

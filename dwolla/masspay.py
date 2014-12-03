@@ -14,7 +14,7 @@ from constants import *
 from rest import r
 
 
-def create(fundssource, items, params=False, access_token=False, pin=False):
+def create(fundssource, items, params=False, alternate_token=False, alternate_pin=False):
     """
     Creates a MassPay job. Must pass in an array of items.
 
@@ -29,7 +29,7 @@ def create(fundssource, items, params=False, access_token=False, pin=False):
         raise Exception('create() requires items parameter')
 
     p = {
-        'oauth_token': access_token if access_token else access_token,
+        'oauth_token': alternate_token if alternate_token else access_token,
         'pin': pin if pin else pin,
         'fundsSource': fundssource,
         'items': items
@@ -41,7 +41,7 @@ def create(fundssource, items, params=False, access_token=False, pin=False):
     return r._post('/masspay/', p)
 
 
-def getjob(id, access_token=False):
+def getjob(id, alternate_token=False):
     """
     Check the status of an existing MassPay job and
     returns additional information.
@@ -52,10 +52,10 @@ def getjob(id, access_token=False):
     if not id:
         raise Exception('getjob() requires id parameter')
 
-    return r._get('/masspay/' + id, {'oauth_token': access_token if access_token else access_token})
+    return r._get('/masspay/' + id, {'oauth_token': alternate_token if alternate_token else access_token})
 
 
-def getjobitems(id, params=False, access_token=False):
+def getjobitems(id, params=False, alternate_token=False):
     """
     Gets all items for a created MassPay job.
 
@@ -66,7 +66,7 @@ def getjobitems(id, params=False, access_token=False):
     if not id:
         raise Exception('getjobitems() requires id parameter')
 
-    p = {'oauth_token': access_token if access_token else access_token}
+    p = {'oauth_token': alternate_token if alternate_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())
@@ -74,7 +74,7 @@ def getjobitems(id, params=False, access_token=False):
     return r._get('/masspay/' + id + '/items/', p)
 
 
-def getitem(jobid, itemid, access_token=False):
+def getitem(jobid, itemid, alternate_token=False):
     """
     Gets an item from a created MassPay job.
 
@@ -87,14 +87,14 @@ def getitem(jobid, itemid, access_token=False):
     if not itemid:
         raise Exception('getitem() requires itemid parameter')
 
-    return r._get('/masspay/' + jobid + '/items/' + itemid, {'oauth_token': access_token if access_token else access_token})
+    return r._get('/masspay/' + jobid + '/items/' + itemid, {'oauth_token': alternate_token if alternate_token else access_token})
 
 
-def listjobs(access_token=False):
+def listjobs(alternate_token=False):
     """
     Lists all MassPay jobs for the user
     under the current OAuth token.
 
     :return: Dictionary with MassPay jobs.
     """
-    return r._get('/masspay/', {'oauth_token': access_token if access_token else access_token})
+    return r._get('/masspay/', {'oauth_token': alternate_token if alternate_token else access_token})

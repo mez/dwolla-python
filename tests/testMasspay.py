@@ -7,10 +7,10 @@ class MassPayTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
-        rest.r.settings['client_id'] = "SOME ID"
-        rest.r.settings['client_secret'] = "SOME ID"
-        rest.r.settings['oauth_token'] = "AN OAUTH TOKEN"
-        rest.r.settings['pin'] = 1234
+        masspay.client_id = "SOME ID"
+        masspay.client_secret = "SOME ID"
+        masspay.access_token = "AN OAUTH TOKEN"
+        masspay.pin = 1234
 
     def testcreate(self):
         masspay.create('Balance', {frozenset({'amount': 10.00, 'destination': '812-123-1111'})})

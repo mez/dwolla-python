@@ -14,14 +14,14 @@ from constants import *
 from rest import r
 
 
-def get(params=False, access_token=False):
+def get(params=False, alternate_token=False):
     """
     Get contacts from user associated with OAuth token.
 
     :param params: Dictionary with additional parameters.
     :return: Dictionary with contacts.
     """
-    p = {'oauth_token': access_token if access_token else access_token}
+    p = {'oauth_token': alternate_token if alternate_token else access_token}
 
     if params:
         p = dict(p.items() + params.items())

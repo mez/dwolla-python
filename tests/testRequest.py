@@ -7,9 +7,9 @@ class RequestTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
-        rest.r.settings['client_id'] = "SOME ID"
-        rest.r.settings['client_secret'] = "SOME ID"
-        rest.r.settings['oauth_token'] = "AN OAUTH TOKEN"
+        request.client_id = "SOME ID"
+        request.client_secret = "SOME ID"
+        request.access_token = "AN OAUTH TOKEN"
 
     def testcreate(self):
         request.create('812-123-1234', 5.50, {'a': 'parameter'})

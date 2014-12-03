@@ -30,8 +30,9 @@ def genauthurl(redirect=False, scope=False):
     return host \
         + 'oauth/v2/authenticate?client_id=' \
         + client_id \
-        + '&response_type=code&scope=' + scope \
-        + (("&redirect_uri=" + redirect) if redirect else '')
+        + '&response_type=code&scope=' \
+        + scope \
+        + (('&redirect_uri=' + redirect) if redirect else '')
 
 
 def get(code, redirect=False):

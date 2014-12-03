@@ -1,8 +1,6 @@
 import unittest
 
-from dwolla import __init__ as d
 from dwolla import rest, accounts
-
 from mock import MagicMock
 
 
@@ -10,17 +8,17 @@ class AccountsTest(unittest.TestCase):
     def setUp(self):
         rest.r._get = MagicMock()
         rest.r._post = MagicMock()
-        d.client_id = "SOME ID"
-        d.client_secret = "SOME ID"
-        d.access_token = "AN OAUTH TOKEN"
+        accounts.client_id = "SOME ID"
+        accounts.client_secret = "SOME ID"
+        accounts.access_token = "AN OAUTH TOKEN"
 
     def testbasic(self):
         accounts.basic('123456')
-        print rest.r._get.mock_calls
         rest.r._get.assert_any_call('/users/123456', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
 
     def testfull(self):
         accounts.full()
+        print rest.r._get.mock_calls
         rest.r._get.assert_any_call('/users/', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testbalance(self):
