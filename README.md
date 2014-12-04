@@ -37,8 +37,8 @@ pip install -r requirements.txt
 
 `dwolla-python` makes it easy for developers to hit the ground running with our API. Before attempting the following, you should ideally create [an application key and secret](https://www.dwolla.com/applications).
 
-* Set any variables in `_settings.py` or use a Python Dictionary with the values you require.
-* `from dwolla import module` where `module` is either `accounts`, `checkouts`, `contacts`, `fundingsources`, `masspay`, `oauth`, `request`, or `transactions`.
+* Change settings in `constants.py` by changing either `dwolla.constant = 'value'` if importing all, or `module.constant = 'value'` if importing one module. 
+* `from dwolla import module` where `module` is either `accounts`, `checkouts`, `contacts`, `fundingsources`, `masspay`, `oauth`, `request`, or `transactions`, or `from dwolla import *`
 * Use at will!
 
 ### Example; Partial Import
@@ -120,6 +120,23 @@ print accounts.basic('812-121-7199')
 # the user associated with the current OAuth token
 
 print contacts.get
+```
+
+### Override Settings
+
+For endpoints that take either an `access_token` or a `pin`, it is possible to pass in alternate tokens or pins into those functions.
+
+#### Example; Create a MassPay job
+
+##### Function prototype
+`def create(fundssource, items, params=False, alternate_token=False, alternate_pin=False):`
+
+```python
+from dwolla import masspay
+
+myItems = {...}
+
+masspay.create('Balance', myItems, alternate_token="My Alternate Token", alternate_pin=1234)
 ```
 
 ---
