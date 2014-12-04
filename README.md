@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 `dwolla-python` allows you to import only the modules you need. 
 
-* For this example, we will get information about a Dwolla ID. *
+*For this example, we will get information about a Dwolla ID.*
 
 ```python
 from dwolla import accounts
@@ -57,7 +57,7 @@ print accounts.basic('812-121-7199')
 
 `dwolla-python` also allows you to import the entire library to access everything at once.
 
-* For this example, we will get information about a Dwolla ID, as well as request 5.00 from that same ID. *
+*For this example, we will get information about a Dwolla ID, as well as request 5.00 from that same ID.*
 
 ```python
 from dwolla import *
@@ -129,7 +129,9 @@ For endpoints that take either an `access_token` or a `pin`, it is possible to p
 #### Example; Create a MassPay job
 
 ##### Function prototype
-`def create(fundssource, items, params=False, alternate_token=False, alternate_pin=False):`
+```python
+def create(fundssource, items, params=False, alternate_token=False, alternate_pin=False):
+```
 
 ```python
 from dwolla import masspay
