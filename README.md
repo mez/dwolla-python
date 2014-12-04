@@ -41,7 +41,9 @@ pip install -r requirements.txt
 * `from dwolla import module` where `module` is either `accounts`, `checkouts`, `contacts`, `fundingsources`, `masspay`, `oauth`, `request`, or `transactions`.
 * Use at will!
 
-### Use variables in `_settings.py`
+### Example; Partial Import
+
+`dwolla-python` allows you to import only the modules you need. 
 
 * For this example, we will get information about a Dwolla ID. *
 
@@ -51,72 +53,73 @@ from dwolla import accounts
 print accounts.basic('812-121-7199')
 ```
 
-### Set your own
+### Example; Complete Import
 
-#### Boilerplate Dictionary
+`dwolla-python` also allows you to import the entire library to access everything at once.
+
+* For this example, we will get information about a Dwolla ID, as well as request 5.00 from that same ID. *
+
 ```python
-{
+from dwolla import *
 
-    'client_id': 'YOUR ID HERE',
-    'client_secret': 'YOUR SECRET HERE',
-    'pin': 1234,
+# Get information about the ID
 
-    'oauth_scope': 'Send|Transactions|Balance|Request|Contacts|AccountInfoFull|Funding|ManageAccount',
-    'oauth_token': 'OAUTH TOKENS GO HERE',
-    'refresh_token': 'REFRESH TOKENS GO HERE',
+print dwolla.accounts.basic('812-121-7199')
 
-    # Hostnames, endpoints
-    'production_host': 'https://www.dwolla.com/',
-    'sandbox_host': 'https://uat.dwolla.com/',
-    'default_postfix': 'oauth/rest',
+# Request $5.00 from that ID
 
-    # Client behavior
-    'sandbox': True,
-    'debug': True,
-    'host': None,
-    'rest_timeout': 15,
-    'proxy': False
+print request.create('812-121-7199', 5.00)
 
-}
+```
+
+### Changing Settings
+
+Whenever you change settings, they will only be partially applied. This means that settings in `constants.py` will remain until they are changed. 
+
+#### Default Settings
+```python
+client_id = 'YOUR ID HERE'
+client_secret = 'YOUR SECRET HERE'
+pin = 1234
+
+oauth_scope = 'Send|Transactions|Balance|Request|Contacts|AccountInfoFull|Funding|ManageAccount'
+access_token = 'OAUTH TOKENS GO HERE'
+
+# Hostnames, endpoints
+production_host = 'https://www.dwolla.com/'
+sandbox_host = 'https://uat.dwolla.com/'
+default_postfix = 'oauth/rest'
+
+# Client behavior
+sandbox = True
+debug = True
+host = None
+rest_timeout = 15
+proxy = False
 ```
 
 #### Example
 
-**`customSettings.py` contains the following example in more detail.**
+**`customsettings.py` contains the following example in more detail.**
 
 ```python
-from dwolla import accounts, rest
+# Let's import everything from dwolla
+from dwolla import *
 
-mySettings = {
+# Now we can set our parameters
+client_id = "My ID"
+client_secret = "My Secret"
 
-    'client_id': 'YOUR ID HERE',
-    'client_secret': 'YOUR SECRET HERE',
-    'pin': 1234,
-
-    'oauth_scope': 'Send|Transactions|Balance|Request|Contacts|AccountInfoFull|Funding|ManageAccount',
-    'oauth_token': 'OAUTH TOKENS GO HERE',
-    'refresh_token': 'REFRESH TOKENS GO HERE',
-
-    # Hostnames, endpoints
-    'production_host': 'https://www.dwolla.com/',
-    'sandbox_host': 'https://uat.dwolla.com/',
-    'default_postfix': 'oauth/rest',
-
-    # Client behavior
-    'sandbox': True,
-    'debug': True,
-    'host': None,
-    'rest_timeout': 15,
-    'proxy': False
-
-}
-
-rest.r = rest.Rest(mySettings)
 
 # Example 1: Get basic information for a user via
 # their Dwolla ID.
 
-print accounts.basic('812-121-7199');
+print accounts.basic('812-121-7199')
+
+# Example 2: Get full account information for
+# the user associated with the current OAuth token
+
+print contacts.get
 ```
 
 ---
