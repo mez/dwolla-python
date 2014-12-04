@@ -18,7 +18,6 @@ class AccountsTest(unittest.TestCase):
 
     def testfull(self):
         accounts.full()
-        print rest.r._get.mock_calls
         rest.r._get.assert_any_call('/users/', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testbalance(self):

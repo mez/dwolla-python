@@ -14,7 +14,6 @@ class FundingSourcesTest(unittest.TestCase):
 
     def testinfo(self):
         fundingsources.info('123456')
-        print rest.r._get.mock_calls
         rest.r._get.assert_any_call('/fundingsources/123456', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testget(self):
