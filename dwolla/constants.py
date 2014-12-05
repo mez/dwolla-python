@@ -16,3 +16,17 @@ debug = True
 host = None
 rest_timeout = 15
 proxy = False
+
+'''
+Note about the `proxy` parameter:
+
+Proxies are stored in a dictionary organized as {'protocol': 'proxy:port'},
+you must specify proxies for both http and https for proper coverage.
+
+An example of this is below:
+
+proxy = {
+    'http': 'http://someproxy:someport',
+    'https': 'https://anotherproxy:anotherport'
+}
+'''

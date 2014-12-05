@@ -72,7 +72,7 @@ print request.create('812-121-7199', 5.00)
 
 ```
 
-### Changing Settings
+### Configuration and Use
 
 Whenever you change settings, they will only be partially applied. This means that settings in `constants.py` will remain until they are changed. 
 
@@ -96,6 +96,17 @@ debug = True
 host = None
 rest_timeout = 15
 proxy = False
+```
+
+#### Proxies
+
+`dwolla-python` also supports proxies. In order to set proxies, you must assign a python dictionary to the proxy constant in the following format:
+
+```
+proxy = {
+    'http': 'http://someproxy:someport',
+    'https': 'https://anotherproxy:anotherport'
+}
 ```
 
 #### Example
@@ -219,6 +230,10 @@ cd location/of/the/library
 pip install unittest
 python -m unittest discover tests/
 ```
+
+## README
+
+In order for the library's README file to display nicely on PyPi, we must use the `*.rst` file format. When making changes to this README file, please [use this tool](http://johnmacfarlane.net/pandoc/try/) to convert the `*.md` file to `*.rst`, and make sure to keep both files updated.
 
 ## Changelog
 
