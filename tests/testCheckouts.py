@@ -1,14 +1,14 @@
 import unittest
-from dwolla import rest, checkouts
+from dwolla import checkouts
 from mock import MagicMock
 
 
 class CheckoutsTest(unittest.TestCase):
     def setUp(self):
-        rest.r._get = MagicMock()
-        rest.r._post = MagicMock()
+        checkouts.r._get = MagicMock()
+        checkouts.r._post = MagicMock()
 
-        rest.r._post.return_value = dict({'Response': {'CheckoutId': 'TEST'}})
+        checkouts.r._post.return_value = dict({'Response': {'CheckoutId': 'TEST'}})
 
         checkouts.client_id = "SOME ID"
         checkouts.client_secret = "SOME ID"
@@ -32,15 +32,15 @@ class CheckoutsTest(unittest.TestCase):
                 'key1': 'something',
                 'key2': 'another thing'
             })})
-        rest.r._post.assert_any_call('/offsitegateway/checkouts/', {'client_secret': 'SOME ID', 'purchaseOrder': {'destinationId': '812-740-4294', 'total': 15.0, 'notes': 'blahhh', 'orderItems': set([frozenset(['price', 'description', 'name', 'quantity'])]), 'metadata': frozenset(['key2', 'key1'])}, 'client_id': 'SOME ID'})
+        checkouts.r._post.assert_any_call('/offsitegateway/checkouts/', {'client_secret': 'SOME ID', 'purchaseOrder': {'destinationId': '812-740-4294', 'total': 15.0, 'notes': 'blahhh', 'orderItems': set([frozenset(['price', 'description', 'name', 'quantity'])]), 'metadata': frozenset(['key2', 'key1'])}, 'client_id': 'SOME ID'})
 
     def testget(self):
         checkouts.get('123456')
-        rest.r._get.assert_any_call('/offsitegateway/checkouts/123456', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
+        checkouts.r._get.assert_any_call('/offsitegateway/checkouts/123456', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
 
     def testcomplete(self):
         checkouts.complete('123456')
-        rest.r._get.assert_any_call('/offsitegateway/checkouts/123456/complete/', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
+        checkouts.r._get.assert_any_call('/offsitegateway/checkouts/123456/complete/', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
 
 if __name__ == '__main__':
     unittest.main()

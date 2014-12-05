@@ -1,12 +1,12 @@
 import unittest
-from dwolla import oauth, rest
+from dwolla import oauth
 from mock import MagicMock
 
 
 class OAuthTest(unittest.TestCase):
     def setUp(self):
-        rest.r._get = MagicMock()
-        rest.r._post = MagicMock()
+        oauth.r._get = MagicMock()
+        oauth.r._post = MagicMock()
         oauth.client_id = "SOME ID"
         oauth.client_secret = "SOME ID"
         oauth.access_token = "AN OAUTH TOKEN"
@@ -17,11 +17,11 @@ class OAuthTest(unittest.TestCase):
 
     def testget(self):
         oauth.get('CODE')
-        rest.r._post.assert_any_call('/token/', {'code': 'CODE', 'client_secret': 'SOME ID', 'grant_type': 'authorization_code', 'client_id': 'SOME ID'}, '/oauth/v2', False)
+        oauth.r._post.assert_any_call('/token/', {'code': 'CODE', 'client_secret': 'SOME ID', 'grant_type': 'authorization_code', 'client_id': 'SOME ID'}, '/oauth/v2', False)
 
     def testrefresh(self):
         oauth.refresh('REFRESH')
-        rest.r._post.assert_any_call('/token/', {'client_secret': 'SOME ID', 'grant_type': 'refresh_token', 'refresh_token': 'REFRESH', 'client_id': 'SOME ID'}, '/oauth/v2', False)
+        oauth.r._post.assert_any_call('/token/', {'client_secret': 'SOME ID', 'grant_type': 'refresh_token', 'refresh_token': 'REFRESH', 'client_id': 'SOME ID'}, '/oauth/v2', False)
 
 if __name__ == '__main__':
     unittest.main()
