@@ -60,7 +60,7 @@ class Rest(object):
         """
         try:
             resp = requests.post(c.host + (custompostfix if custompostfix else c.default_postfix)
-                                 + endpoint, json.dumps(params), proxies=c.proxy,
+                                 + endpoint, json.dumps(params), proxies=c.proxy, timeout=c.rest_timeout,
                                  headers={'User-Agent': 'dwolla-python/2.x', 'Content-Type': 'application/json'})
         except Exception as e:
             if c.debug:
@@ -78,7 +78,7 @@ class Rest(object):
         :return: Dictionary String containing endpoint desirec. containing API response.
         """
         try:
-            resp = requests.get(c.host + c.default_postfix + endpoint, params=params,
+            resp = requests.get(c.host + c.default_postfix + endpoint, params=params, timeout=c.rest_timeout,
                                 proxies=c.proxy, headers={'User-Agent': 'dwolla-python/2.x'})
         except Exception as e:
             if c.debug:
