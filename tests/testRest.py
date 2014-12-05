@@ -25,14 +25,14 @@ class RestTest(unittest.TestCase):
                                       '{"key": "value"}',
                                       headers={'Content-Type': 'application/json',
                                                'User-Agent': 'dwolla-python/2.x'},
-                                      proxies=False)
+                                      proxies=False, timeout=15)
 
     def testget(self):
         rest.r._get('/another/endpoint', {'another_key': 'another_value'}, False)
         requests.get.assert_any_call('https://uat.dwolla.com/oauth/rest/another/endpoint',
                                      headers={'User-Agent': 'dwolla-python/2.x'},
                                      params={'another_key': 'another_value'},
-                                     proxies=False)
+                                     proxies=False, timeout=15)
 
 if __name__ == '__main__':
     unittest.main()
