@@ -13,7 +13,6 @@ default_postfix = 'oauth/rest'
 # Client behavior
 sandbox = True
 debug = True
-host = None
 rest_timeout = 15
 proxy = False
 

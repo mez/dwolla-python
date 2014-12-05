@@ -10,7 +10,7 @@
   The following is a quick-start example for the account endpoints.
 '''
 
-from dwolla import accounts
+from dwolla import *
 
 # Example 1: Get basic information for a user via
 # their Dwolla ID

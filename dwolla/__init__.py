@@ -17,4 +17,4 @@
   Link -- http://developers.dwolla.com
 '''
 
-__all__ = ['rest', 'accounts', 'checkouts', 'contacts', 'fundingsources', 'masspay', 'oauth', 'request', 'transactions']
+__all__ = ['rest', 'accounts', 'checkouts', 'constants', 'contacts', 'fundingsources', 'masspay', 'oauth', 'request', 'transactions']

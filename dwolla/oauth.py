@@ -27,7 +27,7 @@ def genauthurl(redirect=False, scope=False):
     if not scope:
         scope = oauth_scope
 
-    return host \
+    return (sandbox_host if sandbox else production_host) \
         + 'oauth/v2/authenticate?client_id=' \
         + client_id \
         + '&response_type=code&scope=' \
