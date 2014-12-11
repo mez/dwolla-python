@@ -78,8 +78,6 @@ class Rest(object):
         :param dwollaparse: Boolean deciding whether or not to call self._parse().
         :return: Dictionary String containing endpoint desire containing API response.
         """
-        print c.sandbox
-        print (c.sandbox_host if c.sandbox else c.production_host)
         try:
             resp = requests.get((c.sandbox_host if c.sandbox else c.production_host) + c.default_postfix + endpoint, params=params, timeout=c.rest_timeout,
                                 proxies=c.proxy, headers={'User-Agent': 'dwolla-python/2.x'})

@@ -10,7 +10,7 @@
   This file contains functionality for all contact related endpoints.
 '''
 
-imprort constants as c
+import constants as c
 from rest import r
 
 
@@ -21,7 +21,7 @@ def get(params=False, alternate_token=False):
     :param params: Dictionary with additional parameters.
     :return: Dictionary with contacts.
     """
-    p = {'oauth_token': c.alternate_token if c.alternate_token else c.access_token}
+    p = {'oauth_token': alternate_token if alternate_token else c.access_token}
 
     if params:
         p = dict(p.items() + params.items())
