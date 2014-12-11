@@ -10,7 +10,7 @@
   This file contains functionality for all transactions related endpoints.
 '''
 
-from constants import *
+import constants as c
 from rest import r
 
 
@@ -29,8 +29,8 @@ def send(destinationid, amount, params=False, alternate_token=False, alternate_p
         raise Exception('send() requires amount parameter')
 
     p = {
-        'oauth_token': alternate_token if alternate_token else access_token,
-        'pin': alternate_pin if alternate_pin else pin,
+        'oauth_token': alternate_token if alternate_token else c.access_token,
+        'pin': alternate_pin if alternate_pin else c.pin,
         'destinationId': destinationid,
         'amount': amount
     }
@@ -50,9 +50,9 @@ def get(params=False, alternate_token=False):
     :return: Dictionary with transactions
     """
     p = {
-        'oauth_token': alternate_token if alternate_token else access_token,
-        'client_id': client_id,
-        'client_secret': client_secret
+        'oauth_token': alternate_token if alternate_token else c.access_token,
+        'client_id': c.client_id,
+        'client_secret': c.client_secret
     }
 
     if params:
@@ -74,9 +74,9 @@ def info(tid, alternate_token=False):
 
     return r._get('/transactions/' + tid,
                   {
-                      'oauth_token': alternate_token if alternate_token else access_token,
-                      'client_id': client_id,
-                      'client_secret': client_secret
+                      'oauth_token': alternate_token if alternate_token else c.access_token,
+                      'client_id': c.client_id,
+                      'client_secret': c.client_secret
                   })
 
 
@@ -99,8 +99,8 @@ def refund(tid, fundingsource, amount, params=False, alternate_token=False, alte
         raise Exception('refund() requires parameter amount')
 
     p = {
-        'oauth_token': alternate_token if alternate_token else access_token,
-        'pin': alternate_pin if alternate_pin else pin,
+        'oauth_token': alternate_token if alternate_token else c.access_token,
+        'pin': alternate_pin if alternate_pin else c.pin,
         'fundsSource': fundingsource,
         'transactionId': tid,
         'amount': amount
@@ -120,7 +120,7 @@ def stats(params=False, alternate_token=False):
     :param params: Dictionary with additional parameters
     :return: Dictionary with transaction statistics
     """
-    p = {'oauth_token': alternate_token if alternate_token else access_token}
+    p = {'oauth_token': alternate_token if alternate_token else c.access_token}
 
     if params:
         p = dict(p.items() + params.items())

@@ -12,11 +12,12 @@
 '''
 
 # Let's import everything from dwolla
-from dwolla import *
+from dwolla import constants, accounts
 
-# Now we can set our parameters
-client_id = "My ID"
-client_secret = "My Secret"
+constants.sandbox=False
+
+constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
+constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
 
 
 # Example 1: Get basic information for a user via
@@ -27,4 +28,4 @@ print accounts.basic('812-121-7199')
 # Example 2: Get full account information for
 # the user associated with the current OAuth token
 
-print contacts.get
+#print contacts.get

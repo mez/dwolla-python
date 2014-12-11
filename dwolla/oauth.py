@@ -10,7 +10,7 @@
   This file contains functionality for all OAuth related endpoints.
 '''
 
-from constants import *
+import constants as c
 from rest import r
 
 def genauthurl(redirect=False, scope=False):
@@ -25,11 +25,11 @@ def genauthurl(redirect=False, scope=False):
     :return: String with URL
     """
     if not scope:
-        scope = oauth_scope
+        scope = c.oauth_scope
 
-    return (sandbox_host if sandbox else production_host) \
+    return (c.sandbox_host if c.sandbox else c.production_host) \
         + 'oauth/v2/authenticate?client_id=' \
-        + client_id \
+        + c.client_id \
         + '&response_type=code&scope=' \
         + scope \
         + (('&redirect_uri=' + redirect) if redirect else '')
@@ -48,8 +48,8 @@ def get(code, redirect=False):
         raise Exception('get() requires code parameter')
 
     p = {
-        'client_id': client_id,
-        'client_secret': client_secret,
+        'client_id': c.client_id,
+        'client_secret': c.client_secret,
         'grant_type': 'authorization_code',
         'code': code
     }
@@ -70,8 +70,8 @@ def refresh(refreshtoken):
         raise Exception('refresh() requires refreshtoken parameter')
 
     p = {
-        'client_id': client_id,
-        'client_secret': client_secret,
+        'client_id': c.client_id,
+        'client_secret': c.client_secret,
         'grant_type': 'refresh_token',
         'refresh_token': refreshtoken
     }

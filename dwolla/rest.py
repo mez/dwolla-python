@@ -17,9 +17,9 @@
   Link -- http://developers.dwolla.com
 '''
 
-#import constants as c
+import constants as c
 
-from constants import *
+#from constants import *
 
 import json
 import requests
@@ -60,11 +60,11 @@ class Rest(object):
         :return: Dictionary String containing endpoint desire containing API response.
         """
         try:
-            resp = requests.post((sandbox_host if sandbox else production_host) + (custompostfix if custompostfix else default_postfix)
-                                 + endpoint, json.dumps(params), proxies=proxy, timeout=rest_timeout,
+            resp = requests.post((c.sandbox_host if c.sandbox else c.production_host) + (c.custompostfix if c.custompostfix else c.default_postfix)
+                                 + endpoint, json.dumps(params), proxies=c.proxy, timeout=c.rest_timeout,
                                  headers={'User-Agent': 'dwolla-python/2.x', 'Content-Type': 'application/json'})
         except Exception as e:
-            if debug:
+            if c.debug:
                 print "dwolla-python: An error has occurred while making a POST request:\n" + e.message
         else:
             return self._parse(json.loads(resp.text)) if dwollaparse else json.loads(resp.text)
@@ -78,13 +78,13 @@ class Rest(object):
         :param dwollaparse: Boolean deciding whether or not to call self._parse().
         :return: Dictionary String containing endpoint desire containing API response.
         """
-        print sandbox
-        print (sandbox_host if sandbox else production_host)
+        print c.sandbox
+        print (c.sandbox_host if c.sandbox else c.production_host)
         try:
-            resp = requests.get((sandbox_host if sandbox else production_host) + default_postfix + endpoint, params=params, timeout=rest_timeout,
-                                proxies=proxy, headers={'User-Agent': 'dwolla-python/2.x'})
+            resp = requests.get((c.sandbox_host if c.sandbox else c.production_host) + c.default_postfix + endpoint, params=params, timeout=c.rest_timeout,
+                                proxies=c.proxy, headers={'User-Agent': 'dwolla-python/2.x'})
         except Exception as e:
-            if debug:
+            if c.debug:
                 print "dwolla-python: An error has occurred while making a GET request:\n" + e.message
         else:
             return self._parse(json.loads(resp.text)) if dwollaparse else json.loads(resp.json())

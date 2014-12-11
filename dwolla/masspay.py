@@ -10,7 +10,7 @@
   This file contains functionality for all MassPay related endpoints.
 '''
 
-from constants import *
+import constants as c
 from rest import r
 
 
@@ -29,8 +29,8 @@ def create(fundssource, items, params=False, alternate_token=False, alternate_pi
         raise Exception('create() requires items parameter')
 
     p = {
-        'oauth_token': alternate_token if alternate_token else access_token,
-        'pin': pin if pin else pin,
+        'oauth_token': alternate_token if alternate_token else c.access_token,
+        'pin': alternate_pin if alternate_pin else c.pin,
         'fundsSource': fundssource,
         'items': items
     }
@@ -52,7 +52,7 @@ def getjob(id, alternate_token=False):
     if not id:
         raise Exception('getjob() requires id parameter')
 
-    return r._get('/masspay/' + id, {'oauth_token': alternate_token if alternate_token else access_token})
+    return r._get('/masspay/' + id, {'oauth_token': alternate_token if alternate_token else c.access_token})
 
 
 def getjobitems(id, params=False, alternate_token=False):
@@ -66,7 +66,7 @@ def getjobitems(id, params=False, alternate_token=False):
     if not id:
         raise Exception('getjobitems() requires id parameter')
 
-    p = {'oauth_token': alternate_token if alternate_token else access_token}
+    p = {'oauth_token': alternate_token if alternate_token else c.access_token}
 
     if params:
         p = dict(p.items() + params.items())
@@ -87,7 +87,7 @@ def getitem(jobid, itemid, alternate_token=False):
     if not itemid:
         raise Exception('getitem() requires itemid parameter')
 
-    return r._get('/masspay/' + jobid + '/items/' + itemid, {'oauth_token': alternate_token if alternate_token else access_token})
+    return r._get('/masspay/' + jobid + '/items/' + itemid, {'oauth_token': alternate_token if alternate_token else c.access_token})
 
 
 def listjobs(alternate_token=False):
@@ -97,4 +97,4 @@ def listjobs(alternate_token=False):
 
     :return: Dictionary with MassPay jobs.
     """
-    return r._get('/masspay/', {'oauth_token': alternate_token if alternate_token else access_token})
+    return r._get('/masspay/', {'oauth_token': alternate_token if alternate_token else c.access_token})

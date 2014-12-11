@@ -15,7 +15,7 @@
   Further information is available on: https://docs.dwolla.com
 '''
 
-from constants import *
+import constants as c
 from rest import r
 
 
@@ -40,8 +40,8 @@ def create(purchaseorder, params=False):
         raise Exception('create() requires purchaseorder to be of type dict')
 
     p = {
-        'client_id': client_id,
-        'client_secret': client_secret,
+        'client_id': c.client_id,
+        'client_secret': c.client_secret,
         'purchaseOrder': purchaseorder
     }
 
@@ -51,7 +51,7 @@ def create(purchaseorder, params=False):
     id = r._post('/offsitegateway/checkouts/', p)
 
     if 'CheckoutId' in id['Response']:
-        return dict({'URL': ((sandbox_host if sandbox else production_host) + 'payment/checkout/' + id['Response']['CheckoutId'])}.items() + id['Response'].items())
+        return dict({'URL': ((c.sandbox_host if c.sandbox else c.production_host) + 'payment/checkout/' + id['Response']['CheckoutId'])}.items() + id['Response'].items())
     else:
         raise Exception('Unable to create checkout due to API error.')
 
@@ -67,8 +67,8 @@ def get(cid):
 
     return r._get('/offsitegateway/checkouts/' + cid,
                   {
-                      'client_id': client_id,
-                      'client_secret': client_secret
+                      'client_id': c.client_id,
+                      'client_secret': c.client_secret
                   })
 
 def complete(cid):
@@ -83,8 +83,8 @@ def complete(cid):
 
     return r._get('/offsitegateway/checkouts/' + cid + '/complete/',
                   {
-                      'client_id': client_id,
-                      'client_secret': client_secret
+                      'client_id': c.client_id,
+                      'client_secret': c.client_secret
                   })
 
 def verify(sig, cid, amount):
@@ -111,7 +111,7 @@ def verify(sig, cid, amount):
     ampstr = '%s&%.2f' % (cid, amount)
 
     # Check signature
-    return hmac.new(client_secret, ampstr, hashlib.sha1).hexdigest() == sig
+    return hmac.new(c.client_secret, ampstr, hashlib.sha1).hexdigest() == sig
 
 
 
