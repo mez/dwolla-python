@@ -10,7 +10,7 @@
   The following is a quick-start example for the account endpoints.
 '''
 
-from dwolla import *
+from dwolla import accounts, constants
 
 # Configure the library (change these)
 constants.sandbox=False

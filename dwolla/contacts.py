@@ -26,7 +26,7 @@ def get(params=False, alternate_token=False):
     if params:
         p = dict(p.items() + params.items())
 
-    return r._get('/contacts/', p)
+    return r._get('/contacts', p)
 
 
 def nearby(lat, lon, params=False):
@@ -53,4 +53,4 @@ def nearby(lat, lon, params=False):
     if params:
         p = dict(p.items() + params.items())
 
-    return r._get('/contacts/nearby/', p)
+    return r._get('/contacts/nearby', p)

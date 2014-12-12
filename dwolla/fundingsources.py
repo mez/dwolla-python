@@ -40,7 +40,7 @@ def get(params=False, alternate_token=False):
     if params:
         p = dict(params.items() + p.items())
 
-    return r._get('/fundingsources/', p)
+    return r._get('/fundingsources', p)
 
 
 def add(account, routing, type, name, alternate_token=False):
