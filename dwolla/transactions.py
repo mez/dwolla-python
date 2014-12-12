@@ -58,7 +58,7 @@ def get(params=False, alternate_token=False):
     if params:
         p = dict(p.items() + params.items())
 
-    return r._get('/transactions/', p)
+    return r._get('/transactions', p)
 
 
 def info(tid, alternate_token=False):
@@ -125,4 +125,4 @@ def stats(params=False, alternate_token=False):
     if params:
         p = dict(p.items() + params.items())
 
-    return r._get('/transactions/stats/', p)
+    return r._get('/transactions/stats', p)

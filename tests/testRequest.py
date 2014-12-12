@@ -1,5 +1,6 @@
 import unittest
-from dwolla import request
+
+from dwolla import request, constants
 from mock import MagicMock
 
 
@@ -7,9 +8,9 @@ class RequestTest(unittest.TestCase):
     def setUp(self):
         request.r._get = MagicMock()
         request.r._post = MagicMock()
-        request.client_id = "SOME ID"
-        request.client_secret = "SOME ID"
-        request.access_token = "AN OAUTH TOKEN"
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
 
     def testcreate(self):
         request.create('812-123-1234', 5.50, {'a': 'parameter'})

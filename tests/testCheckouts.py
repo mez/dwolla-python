@@ -1,5 +1,5 @@
 import unittest
-from dwolla import checkouts
+from dwolla import checkouts, constants
 from mock import MagicMock
 
 
@@ -10,10 +10,10 @@ class CheckoutsTest(unittest.TestCase):
 
         checkouts.r._post.return_value = dict({'Response': {'CheckoutId': 'TEST'}})
 
-        checkouts.client_id = "SOME ID"
-        checkouts.client_secret = "SOME ID"
-        checkouts.access_token = "AN OAUTH TOKEN"
-        checkouts.pin = 1234
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
+        constants.pin = 1234
 
     def testcreate(self):
         checkouts.create({

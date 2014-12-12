@@ -1,5 +1,6 @@
 import unittest
-from dwolla import masspay
+
+from dwolla import masspay, constants
 from mock import MagicMock
 
 
@@ -7,10 +8,10 @@ class MassPayTest(unittest.TestCase):
     def setUp(self):
         masspay.r._get = MagicMock()
         masspay.r._post = MagicMock()
-        masspay.client_id = "SOME ID"
-        masspay.client_secret = "SOME ID"
-        masspay.access_token = "AN OAUTH TOKEN"
-        masspay.pin = 1234
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
+        constants.pin = 1234
 
     def testcreate(self):
         masspay.create('Balance', {frozenset({'amount': 10.00, 'destination': '812-123-1111'})})

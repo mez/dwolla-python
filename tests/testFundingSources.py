@@ -1,5 +1,6 @@
 import unittest
-from dwolla import fundingsources
+
+from dwolla import fundingsources, constants
 from mock import MagicMock
 
 
@@ -7,10 +8,10 @@ class FundingSourcesTest(unittest.TestCase):
     def setUp(self):
         fundingsources.r._get = MagicMock()
         fundingsources.r._post = MagicMock()
-        fundingsources.client_id = "SOME ID"
-        fundingsources.client_secret = "SOME ID"
-        fundingsources.access_token = "AN OAUTH TOKEN"
-        fundingsources.pin = 1234
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
+        constants.pin = 1234
 
     def testinfo(self):
         fundingsources.info('123456')
@@ -18,7 +19,7 @@ class FundingSourcesTest(unittest.TestCase):
 
     def testget(self):
         fundingsources.get({'a': 'parameter'})
-        fundingsources.r._get.assert_any_call('/fundingsources/', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
+        fundingsources.r._get.assert_any_call('/fundingsources', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
 
     def testadd(self):
         fundingsources.add('123456', '654321', 'Checking', 'Unit Test Bank')

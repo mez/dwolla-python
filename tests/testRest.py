@@ -1,4 +1,5 @@
 import unittest, requests, json
+
 from dwolla import rest
 from mock import MagicMock
 

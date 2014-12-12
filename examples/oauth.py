@@ -10,7 +10,13 @@
   The following is a quick-start example for the OAuth endpoints.
 '''
 
-from dwolla import oauth
+from dwolla import oauth, constants
+
+# Configure the library (change these)
+constants.sandbox=False
+
+constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
+constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
 
 # Step 1: Generate an OAuth permissions page URL
 # with your application's default set redirect.
@@ -35,6 +41,11 @@ print oauth.genauthurl("http://requestb.in/yxlywryx")
 
 access_set = oauth.get("Z/KHDIyWO/LboIGn3wGGs1+sRWg=", "http://requestb.in/yxlywryx")
 print access_set
+
+# Step 2.5: If you wish, you can set the library's global
+# access token parameter by doing the following...
+
+constants.access_token=access_set['access_token']
 
 # Step 3: Exchange your expiring refresh token for another
 # access/refresh token pair.x

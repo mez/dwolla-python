@@ -1,5 +1,5 @@
 import unittest
-from dwolla import oauth
+from dwolla import oauth, constants
 from mock import MagicMock
 
 
@@ -7,10 +7,10 @@ class OAuthTest(unittest.TestCase):
     def setUp(self):
         oauth.r._get = MagicMock()
         oauth.r._post = MagicMock()
-        oauth.client_id = "SOME ID"
-        oauth.client_secret = "SOME ID"
-        oauth.access_token = "AN OAUTH TOKEN"
-        oauth.oauth_scope = "Balance|AccountInfo"
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
+        constants.oauth_scope = "Balance|AccountInfo"
 
     def testgenauthurl(self):
         self.assertEqual(oauth.genauthurl(), 'https://uat.dwolla.com/oauth/v2/authenticate?client_id=SOME ID&response_type=code&scope=Balance|AccountInfo')

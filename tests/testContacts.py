@@ -1,5 +1,6 @@
 import unittest
-from dwolla import contacts
+
+from dwolla import contacts, constants
 from mock import MagicMock
 
 
@@ -7,9 +8,9 @@ class ContactsTest(unittest.TestCase):
     def setUp(self):
         contacts.r._get = MagicMock()
         contacts.r._post = MagicMock()
-        contacts.client_id = "SOME ID"
-        contacts.client_secret = "SOME ID"
-        contacts.access_token = "AN OAUTH TOKEN"
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
 
     def testget(self):
         contacts.get({'a': 'parameter'})
@@ -17,7 +18,7 @@ class ContactsTest(unittest.TestCase):
 
     def testnearby(self):
         contacts.nearby(45, 50, {'another': 'parameter'})
-        contacts.r._get.assert_any_call('/contacts/nearby/', {'latitude': 45, 'client_secret': 'SOME ID', 'another': 'parameter', 'client_id': 'SOME ID', 'longitude': 50})
+        contacts.r._get.assert_any_call('/contacts/nearby', {'latitude': 45, 'client_secret': 'SOME ID', 'another': 'parameter', 'client_id': 'SOME ID', 'longitude': 50})
 
 if __name__ == '__main__':
     unittest.main()

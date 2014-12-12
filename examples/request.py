@@ -10,25 +10,109 @@
   The following is a quick-start example for the request endpoints.
 '''
 
-from dwolla import request
+from dwolla import request, constants
 
 # Example 1: Request $5 from 812-740-3809
 
 print request.create('812-740-3809', 5.00)
+# Return:
+# 1470 (request ID)
+
 
 # Example 2: Get all pending requests from the user
 # associated with the current OAuth token.
+print request.get()
+# Return:
+# [
+#         {
+#             "Id": 640,
+#             "Source": {
+#                 "Id": "812-693-9484",
+#                 "Name": "Spencer Hunter",
+#                 "Type": "Dwolla",
+#                 "Image": null
+#             },
+#             "Destination": {
+#                 "Id": "812-706-1396",
+#                 "Name": "Jane Doe",
+#                 "Type": "Dwolla",
+#                 "Image": null
+#             },
+#             "Amount": 5.00,
+#             "Notes": "",
+#             "DateRequested": "2014-07-23T21:49:06Z",
+#             "Status": "Pending" ,
+#             "Transaction": null,
+#             "CancelledBy": null,
+#             "DateCancelled": "",
+#             "SenderAssumeFee": false,
+#             "SenderAssumeAdditionalFees": false,
+#             "AdditionalFees": [],
+#             "Metadata": null 
+#         },
+#         ...
+# ]
 
-print request.get
 
 # Example 3: Get info regarding a pending money request.
-
 print request.info(1470)
+# Return:
+#         {
+#             "Id": 1470,
+#             "Source": {
+#                 "Id": "812-693-9484",
+#                 "Name": "Spencer Hunter",
+#                 "Type": "Dwolla",
+#                 "Image": null
+#             },
+#             "Destination": {
+#                 "Id": "812-706-1396",
+#                 "Name": "Jane Doe",
+#                 "Type": "Dwolla",
+#                 "Image": null
+#             },
+#             "Amount": 5.00,
+#             "Notes": "",
+#             "DateRequested": "2014-07-23T21:49:06Z",
+#             "Status": "Pending" ,
+#             "Transaction": null,
+#             "CancelledBy": null,
+#             "DateCancelled": "",
+#             "SenderAssumeFee": false,
+#             "SenderAssumeAdditionalFees": false,
+#             "AdditionalFees": [],
+#             "Metadata": null 
+#         }
+
 
 # Example 4: Cancel a pending money request.
 
 print request.cancel(1470)
+# Return:
+# Empty string if successful, error will be raised if not.
+
 
 # Example 5: Fulfill a pending money request.
 
 print request.fulfill(1475, 10.00)
+# Return:
+# {
+#         "Id": 147659,
+#         "RequestId": 1475,
+#         "Amount": 10.00,
+#         "SentDate": "2014-01-22T13:11:10Z",
+#         "ClearingDate": "2014-01-22T13:11:10Z",
+#         "Status": "processed" ,
+#         "Source": {
+#             "Id": "812-693-9484",
+#             "Name": "Michael Schonfeld",
+#             "Type": "Dwolla",
+#             "Image": null
+#         },
+#         "Destination": {
+#             "Id": "812-600-6705",
+#             "Name": "Michael Schonfeld",
+#             "Type": "Dwolla",
+#             "Image": null
+#         }
+# }

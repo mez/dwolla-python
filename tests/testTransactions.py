@@ -1,5 +1,6 @@
 import unittest
-from dwolla import transactions
+
+from dwolla import transactions, constants
 from mock import MagicMock
 
 
@@ -7,10 +8,10 @@ class TransTest(unittest.TestCase):
     def setUp(self):
         transactions.r._get = MagicMock()
         transactions.r._post = MagicMock()
-        transactions.client_id = "SOME ID"
-        transactions.client_secret = "SOME ID"
-        transactions.access_token = "AN OAUTH TOKEN"
-        transactions.pin = 1234
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
+        constants.pin = 1234
 
     def testsend(self):
         transactions.send('812-111-1234', 5.00, {'a': 'parameter'})
@@ -18,7 +19,7 @@ class TransTest(unittest.TestCase):
 
     def testget(self):
         transactions.get({'another': 'parameter'})
-        transactions.r._get.assert_any_call('/transactions/', {'client_secret': 'SOME ID', 'oauth_token': 'AN OAUTH TOKEN', 'another': 'parameter', 'client_id': 'SOME ID'})
+        transactions.r._get.assert_any_call('/transactions', {'client_secret': 'SOME ID', 'oauth_token': 'AN OAUTH TOKEN', 'another': 'parameter', 'client_id': 'SOME ID'})
 
     def testinfo(self):
         transactions.info('123456')
@@ -30,7 +31,7 @@ class TransTest(unittest.TestCase):
 
     def teststats(self):
         transactions.stats({'a': 'parameter'})
-        transactions.r._get.assert_any_call('/transactions/stats/', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
+        transactions.r._get.assert_any_call('/transactions/stats', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
 
 if __name__ == '__main__':
     unittest.main()

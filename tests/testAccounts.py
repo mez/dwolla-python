@@ -1,6 +1,6 @@
 import unittest
 
-from dwolla import accounts
+from dwolla import accounts, constants
 from mock import MagicMock
 
 
@@ -8,9 +8,9 @@ class AccountsTest(unittest.TestCase):
     def setUp(self):
         accounts.r._get = MagicMock()
         accounts.r._post = MagicMock()
-        accounts.client_id = "SOME ID"
-        accounts.client_secret = "SOME ID"
-        accounts.access_token = "AN OAUTH TOKEN"
+        constants.client_id = "SOME ID"
+        constants.client_secret = "SOME ID"
+        constants.access_token = "AN OAUTH TOKEN"
 
     def testbasic(self):
         accounts.basic('123456')
