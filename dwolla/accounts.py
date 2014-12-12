@@ -37,7 +37,7 @@ def full(alternate_token=False):
 
     :return: Dictionary with account information.
     """
-    return r._get('/users/',
+    return r._get('/users',
                      {
                          'oauth_token': alternate_token if alternate_token else c.access_token
                      })
@@ -49,7 +49,7 @@ def balance(alternate_token=False):
 
     :return: Balance
     """
-    return r._get('/balance/', {'oauth_token': alternate_token if alternate_token else c.access_token})
+    return r._get('/balance', {'oauth_token': alternate_token if alternate_token else c.access_token})
 
 def nearby(lat, lon):
     """
@@ -64,7 +64,7 @@ def nearby(lat, lon):
     if not lon:
         raise Exception('nearby() requires lon parameter')
 
-    return r._get('/users/nearby/',
+    return r._get('/users/nearby',
                      {
                          'client_id': c.client_id,
                          'client_secret': c.client_secret,
@@ -78,7 +78,7 @@ def autowithdrawalstatus(alternate_token=False):
     with the currently set OAuth token.
     :return: AW status for account.
     """
-    return r._get('/accounts/features/auto_withdrawl/',
+    return r._get('/accounts/features/auto_withdrawl',
                   {
                       'oauth_token': alternate_token if alternate_token else c.access_token
                   })

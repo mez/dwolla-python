@@ -11,9 +11,10 @@
   own settings with dwolla-python.
 '''
 
-# Let's import everything from Dwolla
+# Import everything from the dwolla package
 from dwolla import *
 
+# Configure the library (change these)
 constants.sandbox=False
 
 constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
