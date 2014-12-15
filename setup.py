@@ -12,5 +12,6 @@ setup(
     license='MIT',
     author='Dwolla Inc, David Stancu',
     author_email='david@dwolla.com',
+    long_description=open('README.rst').read(),
     description='An official requests based wrapper for the Dwolla API'
 )
