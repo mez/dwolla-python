@@ -1,5 +1,6 @@
 *.pyc
 *.local
+*.iml
 .idea
 .Python
 bin/

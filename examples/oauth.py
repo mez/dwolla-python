@@ -1,45 +1,53 @@
-# Include the Flask framework
-from flask import Flask, url_for, request, redirect, render_template, session
-app = Flask(__name__)
-
-# Include the Dwolla REST Client
-from dwolla import DwollaClientApp
-
-# Include any required keys
-import _keys
-
-# Instantiate a new Dwolla User client
-# And, Seed a previously generated access token
-Dwolla = DwollaClientApp(_keys.apiKey, _keys.apiSecret)
-
-
 '''
-    STEP 1: 
-      Create an authentication URL
-      that the user will be redirected to
+      _               _ _
+   __| |_      _____ | | | __ _
+  / _` \ \ /\ / / _ \| | |/ _` |
+ | (_| |\ V  V / (_) | | | (_| |
+  \__,_| \_/\_/ \___/|_|_|\__,_|
+
+  An official requests based wrapper for the Dwolla API.
+
+  The following is a quick-start example for the OAuth endpoints.
 '''
-@app.route("/")
-def index():
-    oauth_return_url = url_for('dwolla_oauth_return', _external=True) # Point back to this file/URL
-    permissions = 'Send|Transactions|Balance|Request|Contacts|AccountInfoFull'
-    authUrl = Dwolla.init_oauth_url(oauth_return_url, permissions)
-    return 'To begin the OAuth process, send the user off to <a href="%s">%s</a>' % (authUrl, authUrl)
 
+from dwolla import oauth, constants
 
-'''
-    STEP 2: 
-      Exchange the temporary code given
-      to us in the querystring, for
-      a never-expiring OAuth access token
-'''
-@app.route("/dwolla/oauth_return")
-def dwolla_oauth_return():
-    oauth_return_url = url_for('dwolla_oauth_return', _external=True) # Point back to this file/URL
-    code = request.args.get("code")
-    token = Dwolla.get_oauth_token(code, redirect_uri=oauth_return_url)
-    return 'Your never-expiring OAuth access token is: <b>%s</b>' % token
+# Configure the library (change these)
+constants.sandbox=False
 
+constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
+constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
 
-# Run the app
-if __name__ == "__main__":
-    app.run(debug=True)
+# Step 1: Generate an OAuth permissions page URL
+# with your application's default set redirect.
+#
+# http://requestb.in is a service that catches
+# redirect responses. Go over to their URL and make
+# your own so that you may conveniently catch the
+# redirect parameters.
+#
+# You can view your responses at:
+# http://requestb.in/[some_id]?inspect
+#
+# If you're feeling dangerous, feel free to simply use
+# http://google.com and manually parse the parameters
+# out yourself. The choice remains yours.
+
+print oauth.genauthurl("http://requestb.in/yxlywryx")
+
+# Step 2: The redirect should provide you with a `code`
+# parameter. You will now exchange this code for an access
+# and refresh token pair.
+
+access_set = oauth.get("Z/KHDIyWO/LboIGn3wGGs1+sRWg=", "http://requestb.in/yxlywryx")
+print access_set
+
+# Step 2.5: If you wish, you can set the library's global
+# access token parameter by doing the following...
+
+constants.access_token=access_set['access_token']
+
+# Step 3: Exchange your expiring refresh token for another
+# access/refresh token pair.x
+
+print oauth.refresh(access_set['refresh_token'])
