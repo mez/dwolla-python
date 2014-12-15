@@ -18,7 +18,7 @@ constants.sandbox=False
 constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
 constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
 constants.access_token = "aK6DdCVlIsR1hKvTbp8VCwnvci8cwaTLlW9edtbHJVmKoopnoe"
-
+constants.pin = 1234
 
 # Example 1: Create a MassPay job with two items to
 # the Balance of the user associated with the current

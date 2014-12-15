@@ -18,7 +18,7 @@ class RequestTest(unittest.TestCase):
 
     def testget(self):
         request.get({'another': 'parameter'})
-        request.r._get.assert_any_call('/requests/', params={'oauth_token': 'AN OAUTH TOKEN', 'another': 'parameter'})
+        request.r._get.assert_any_call('/requests', params={'oauth_token': 'AN OAUTH TOKEN', 'another': 'parameter'})
 
     def testinfo(self):
         request.info('654321')

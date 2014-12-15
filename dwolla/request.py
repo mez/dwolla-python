@@ -54,7 +54,7 @@ def get(params=False, alternate_token=False):
     if params:
         p = dict(p.items() + params.items())
 
-    return r._get('/requests/', params=p)
+    return r._get('/requests', params=p)
 
 
 def info(requestid, alternate_token=False):

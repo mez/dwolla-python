@@ -1,3 +1,4 @@
+
 '''
       _               _ _
    __| |_      _____ | | | __ _
@@ -71,7 +72,7 @@ def getjobitems(id, params=False, alternate_token=False):
     if params:
         p = dict(p.items() + params.items())
 
-    return r._get('/masspay/' + id + '/items/', p)
+    return r._get('/masspay/' + id + '/items', p)
 
 
 def getitem(jobid, itemid, alternate_token=False):
@@ -97,4 +98,4 @@ def listjobs(alternate_token=False):
 
     :return: Dictionary with MassPay jobs.
     """
-    return r._get('/masspay/', {'oauth_token': alternate_token if alternate_token else c.access_token})
+    return r._get('/masspay', {'oauth_token': alternate_token if alternate_token else c.access_token})

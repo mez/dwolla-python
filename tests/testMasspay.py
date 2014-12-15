@@ -23,7 +23,7 @@ class MassPayTest(unittest.TestCase):
 
     def testgetjobitems(self):
         masspay.getjobitems('1234567', {'a': 'parameter'})
-        masspay.r._get.assert_any_call('/masspay/1234567/items/', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
+        masspay.r._get.assert_any_call('/masspay/1234567/items', {'a': 'parameter', 'oauth_token': 'AN OAUTH TOKEN'})
 
     def testgetitem(self):
         masspay.getitem('123', '456')
@@ -31,7 +31,7 @@ class MassPayTest(unittest.TestCase):
 
     def testlistjobs(self):
         masspay.listjobs()
-        masspay.r._get.assert_any_call('/masspay/', {'oauth_token': 'AN OAUTH TOKEN'})
+        masspay.r._get.assert_any_call('/masspay', {'oauth_token': 'AN OAUTH TOKEN'})
 
 if __name__ == '__main__':
     unittest.main()

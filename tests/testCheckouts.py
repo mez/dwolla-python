@@ -40,7 +40,7 @@ class CheckoutsTest(unittest.TestCase):
 
     def testcomplete(self):
         checkouts.complete('123456')
-        checkouts.r._get.assert_any_call('/offsitegateway/checkouts/123456/complete/', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
+        checkouts.r._get.assert_any_call('/offsitegateway/checkouts/123456/complete', {'client_secret': 'SOME ID', 'client_id': 'SOME ID'})
 
 if __name__ == '__main__':
     unittest.main()

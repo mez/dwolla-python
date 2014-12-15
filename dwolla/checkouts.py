@@ -81,7 +81,7 @@ def complete(cid):
     if not cid:
         raise Exception('complete() requires cid parameter')
 
-    return r._get('/offsitegateway/checkouts/' + cid + '/complete/',
+    return r._get('/offsitegateway/checkouts/' + cid + '/complete',
                   {
                       'client_id': c.client_id,
                       'client_secret': c.client_secret

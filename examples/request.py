@@ -12,6 +12,14 @@
 
 from dwolla import request, constants
 
+# Configure the library (change these)
+constants.sandbox=False
+
+constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
+constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
+constants.access_token = "aK6DdCVlIsR1hKvTbp8VCwnvci8cwaTLlW9edtbHJVmKoopnoe"
+constants.pin = 1234
+
 # Example 1: Request $5 from 812-740-3809
 
 print request.create('812-740-3809', 5.00)

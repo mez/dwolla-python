@@ -18,19 +18,19 @@ class AccountsTest(unittest.TestCase):
 
     def testfull(self):
         accounts.full()
-        accounts.r._get.assert_any_call('/users/', {'oauth_token': 'AN OAUTH TOKEN'})
+        accounts.r._get.assert_any_call('/users', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testbalance(self):
         accounts.balance()
-        accounts.r._get.assert_any_call('/balance/', {'oauth_token': 'AN OAUTH TOKEN'})
+        accounts.r._get.assert_any_call('/balance', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testnearby(self):
         accounts.nearby(45, 50)
-        accounts.r._get.assert_any_call('/users/nearby/', {'latitude': 45, 'client_secret': 'SOME ID', 'longitude': 50, 'client_id': 'SOME ID'})
+        accounts.r._get.assert_any_call('/users/nearby', {'latitude': 45, 'client_secret': 'SOME ID', 'longitude': 50, 'client_id': 'SOME ID'})
 
     def testautowithdrawalstatus(self):
         accounts.autowithdrawalstatus()
-        accounts.r._get.assert_any_call('/accounts/features/auto_withdrawl/', {'oauth_token': 'AN OAUTH TOKEN'})
+        accounts.r._get.assert_any_call('/accounts/features/auto_withdrawl', {'oauth_token': 'AN OAUTH TOKEN'})
 
     def testtoggleautowithdrawalstatus(self):
         accounts.toggleautowithdrawalstatus(True, '123456')
