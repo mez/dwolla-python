@@ -37,8 +37,8 @@ pip install -r requirements.txt
 
 `dwolla-python` makes it easy for developers to hit the ground running with our API. Before attempting the following, you should ideally create [an application key and secret](https://www.dwolla.com/applications).
 
-* Change settings in `constants.py` by changing either `dwolla.constant = 'value'` if importing all, or `module.constant = 'value'` if importing one module. 
-* `from dwolla import module` where `module` is either `accounts`, `checkouts`, `contacts`, `fundingsources`, `masspay`, `oauth`, `request`, or `transactions`, or `from dwolla import *`
+* Change settings in `constants.py` by editing the file, or on-the-fly by doing `from dwolla import constants`, `constants.some_setting = some_value`.
+* `from dwolla import module` where `module` is either `accounts`, `checkouts`, `contacts`, `fundingsources`, `masspay`, `oauth`, `request`, or `transactions`, or `from dwolla import *` to import all.
 * Use at will!
 
 ### Example; Partial Import
@@ -68,8 +68,7 @@ print dwolla.accounts.basic('812-121-7199')
 
 # Request $5.00 from that ID
 
-print request.create('812-121-7199', 5.00)
-
+print dwolla.request.create('812-121-7199', 5.00)
 ```
 
 ### Configuration and Use
@@ -114,23 +113,21 @@ proxy = {
 **`customsettings.py` contains the following example in more detail.**
 
 ```python
-# Let's import everything from dwolla
+# Import everything from the dwolla package
 from dwolla import *
 
-# Now we can set our parameters
-client_id = "My ID"
-client_secret = "My Secret"
+# Configure the library (change these)
+constants.sandbox=False
+
+constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
+constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
+constants.access_token = "aK6DdCVlIsR1hKvTbp8VCwnvci8cwaTLlW9edtbHJVmKoopnoe"
 
 
 # Example 1: Get basic information for a user via
 # their Dwolla ID.
 
-print accounts.basic('812-121-7199')
-
-# Example 2: Get full account information for
-# the user associated with the current OAuth token
-
-print contacts.get
+print accounts.basic('812-202-3784')
 ```
 
 ### Override Settings
