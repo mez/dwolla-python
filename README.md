@@ -18,7 +18,7 @@ The new and improved Dwolla library based off of the Python `requests` client. `
 *To install:*
 
 ```
-pip install dwolla-python
+pip install dwolla
 ```
 
 *To add to `requirements.txt` and make this a permanent dependency of your package:*
@@ -26,7 +26,7 @@ pip install dwolla-python
 ```requirements.txt
 YourApp
 SomeLibrary==1.2.3
-dwolla-python>=2.0.0
+dwolla>=2.0.0
 ```
 
 ```
