@@ -130,7 +130,7 @@ print masspay.getitem(info['Id'], items[0]['ItemId'])
 # Example 5: Get all current MassPay jobs for the
 # user associated with the current OAuth token.
 
-print masspay.listjobs
+print masspay.listjobs()
 # Return:
 # [
 #         {

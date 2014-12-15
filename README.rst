@@ -64,11 +64,11 @@ from dwolla import *
 
 # Get information about the ID
 
-print dwolla.accounts.basic('812-121-7199')
+print accounts.basic('812-121-7199')
 
 # Request $5.00 from that ID
 
-print dwolla.request.create('812-121-7199', 5.00)
+print request.create('812-121-7199', 5.00)
 ```
 
 ### Configuration and Use
