@@ -1,250 +1,315 @@
 dwolla-python
 =============
 
-Official Python wrapper for Dwolla’s API
+|Build Status|
+
+The new and improved Dwolla library based off of the Python ``requests``
+client. ``dwolla-python`` includes support for all API endpoints, and is
+the new library officially supported by Dwolla.
 
 Version
 -------
 
-1.6.6
-
-Requirements
-------------
-
--  `Python`_
--  `Dwolla Application`_
+2.0.1
 
 Installation
 ------------
 
-Automatic installation using `pip`_:
+``dwolla-python`` is available on
+`PyPi <https://pypi.python.org/pypi/dwolla>`__, and therefore can be
+installed automagically via
+`pip <https://pip.pypa.io/en/latest/installing.html>`__.
+
+**The Python ``requests`` library is required for ``dwolla-python`` to
+operate. It is included as a dependency on this package if your
+environment does not already have it.**
+
+*To install:*
 
 ::
 
     pip install dwolla
 
-Usage
------
+*To add to ``requirements.txt`` and make this a permanent dependency of
+your package:*
+
+.. code:: requirements.txt
+
+    YourApp
+    SomeLibrary==1.2.3
+    dwolla>=2.0.0
+
+::
+
+    pip install -r requirements.txt
+
+Quickstart
+----------
+
+``dwolla-python`` makes it easy for developers to hit the ground running
+with our API. Before attempting the following, you should ideally create
+`an application key and secret <https://www.dwolla.com/applications>`__.
+
+-  Change settings in ``constants.py`` by editing the file, or
+   on-the-fly by doing ``from dwolla import constants``,
+   ``constants.some_setting = some_value``.
+-  ``from dwolla import module`` where ``module`` is either
+   ``accounts``, ``checkouts``, ``contacts``, ``fundingsources``,
+   ``masspay``, ``oauth``, ``request``, or ``transactions``, or
+   ``from dwolla import *`` to import all.
+-  Use at will!
+
+Example; Partial Import
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``dwolla-python`` allows you to import only the modules you need.
+
+*For this example, we will get information about a Dwolla ID.*
 
 .. code:: python
 
-    from dwolla import DwollaUser
-    DwollaUser = DwollaUser('[OAuth Token Goes Here]')
+    from dwolla import accounts
 
-    transactionId = DwollaUser.send_funds(1.00, '812-626-8794', '[PIN]')
-    print transactionId
+    print accounts.basic('812-121-7199')
 
-Examples / Quickstart
----------------------
+Example; Complete Import
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-To use the examples in the /examples folder, first edit the \_keys.py
-file and add your Dwolla API application’s key, and secret, along with
-your account’s `OAuth token`_, and PIN.
+``dwolla-python`` also allows you to import the entire library to access
+everything at once.
 
-This repo includes various usage examples, including:
-
--  Authenticating with OAuth [oauth.py]
--  Sending money [send.py]
--  Fetching account information [accountInfo.py]
--  Grabbing a user’s contacts [contacts.py]
--  Listing a user’s funding sources [fundingSources.py]
--  Creating offsite gateway sessions [offsiteGateway.py]
--  Registering a new Dwolla user account [registerUser.py]
--  Handling money requests [request.py]
-
-Environment Variables
----------------------
-
--  ``DWOLLA_VERIFY_SSL`` (optional; True/False) Should we verify
-   Dwolla’s SSL?
--  ``DWOLLA_DEBUG`` (optional; True/False) Enable verbose debug?
--  ``DWOLLA_SANDBOX`` (optional; True/False) Use Dwolla’s UAT env?
--  ``DWOLLA_API_HOST`` (optional; String/URL) A custom API host URL;
-   defaults to https://www.dwolla.com/
-
-Instantiation Variables
------------------------
-
-If an application makes it difficult to use environment variables to set
-parameters, each of the aforementioned variables can be put into a
-Python ``dict`` upon instantiation of ``DwollaGateway()``,
-``DwollaClientApp()``, and ``DwollaUser()``.
+*For this example, we will get information about a Dwolla ID, as well as
+request 5.00 from that same ID.*
 
 .. code:: python
 
-    {
-        'VERIFY_SSL': True,
-        'DEBUG': True,
-        'SANDBOX': True,
-        'HOST': 'https://somecustomhost.thatyouprobablywontset.dwolla.com'
+    from dwolla import *
+
+    # Get information about the ID
+
+    print accounts.basic('812-121-7199')
+
+    # Request $5.00 from that ID
+
+    print request.create('812-121-7199', 5.00)
+
+Configuration and Use
+~~~~~~~~~~~~~~~~~~~~~
+
+Whenever you change settings, they will only be partially applied. This
+means that settings in ``constants.py`` will remain until they are
+changed.
+
+Default Settings
+^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    client_id = 'YOUR ID HERE'
+    client_secret = 'YOUR SECRET HERE'
+    pin = 1234
+
+    oauth_scope = 'Send|Transactions|Balance|Request|Contacts|AccountInfoFull|Funding|ManageAccount'
+    access_token = 'OAUTH TOKENS GO HERE'
+
+    # Hostnames, endpoints
+    production_host = 'https://www.dwolla.com/'
+    sandbox_host = 'https://uat.dwolla.com/'
+    default_postfix = 'oauth/rest'
+
+    # Client behavior
+    sandbox = True
+    debug = True
+    host = None
+    rest_timeout = 15
+    proxy = False
+
+Proxies
+^^^^^^^
+
+``dwolla-python`` also supports proxies. In order to set proxies, you
+must assign a python dictionary to the proxy constant in the following
+format:
+
+::
+
+    proxy = {
+        'http': 'http://someproxy:someport',
+        'https': 'https://anotherproxy:anotherport'
     }
 
-Let’s take the previous example from the Usage section, and make our
-requests target the UAT environment via instantiation variables:
+Example
+^^^^^^^
+
+**``customsettings.py`` contains the following example in more detail.**
 
 .. code:: python
 
-    from dwolla import DwollaUser
-    DwollaUser = DwollaUser('[OAuth Token Goes Here]', {'SANDBOX': True})
+    # Import everything from the dwolla package
+    from dwolla import *
 
-    transactionId = DwollaUser.send_funds(1.00, '812-626-8794', '[PIN]')
-    print transactionId
+    # Configure the library (change these)
+    constants.sandbox=False
 
-Methods
--------
+    constants.client_id = "zbDwIC0dWCVU7cQtfvGwVwVjvxwQfjaTgkVi+FZOmKqPBzK5JG"
+    constants.client_secret = "ckmgwJz9h/fZ09unyXxpupCyrmAMe0bnUiMHF/0+SDaR9RHe99"
+    constants.access_token = "aK6DdCVlIsR1hKvTbp8VCwnvci8cwaTLlW9edtbHJVmKoopnoe"
 
-DwollaClientApp class:
+
+    # Example 1: Get basic information for a user via
+    # their Dwolla ID.
+
+    print accounts.basic('812-202-3784')
+
+Override Settings
+~~~~~~~~~~~~~~~~~
+
+For endpoints that take either an ``access_token`` or a ``pin``, it is
+possible to pass in alternate tokens or pins into those functions.
+
+Example; Create a MassPay job
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Function prototype
+''''''''''''''''''
+
+.. code:: python
+
+    def create(fundssource, items, params=False, alternate_token=False, alternate_pin=False):
+
+.. code:: python
+
+    from dwolla import masspay
+
+    myItems = {...}
+
+    masspay.create('Balance', myItems, alternate_token="My Alternate Token", alternate_pin=1234)
+
+--------------
+
+There are 9 quick-start files which will walk you through working with
+``dwolla-python``'s classes/endpoint groupings.
+
+-  ``customsettings.py``: Instantiate library with custom settings.
+-  ``accounts.py``: Retrieve account information, such as balance.
+-  ``checkouts.py``: Offsite-gateway endpoints, server-to-server
+   checkout example.
+-  ``contacts.py``: Retrieve/sort through user contacts.
+-  ``fundingsources.py``: Modify and get information with regards to
+   funding sources.
+-  ``masspay.py``: Create and retrieve jobs/data regarding MassPay jobs.
+-  ``oauth.py``: Examples on retrieving OAuth access/refresh token
+   pairs.
+-  ``request.py``: Create and retrieve money requests/information
+   regarding money requests.
+-  ``transactions.py``: Send money, get transaction info by ID, etc.
+
+Structure
+---------
+
+``dwolla-python`` is a conglomerate of multiple modules; each module in
+the ``dwolla/`` directory is named after a the endpoints that it covers
+(`similar to Dwolla's developer
+documentation <https://developers.dwolla.com/dev/docs>`__).
+
+Endpoint Modules and Methods
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each endpoint module depends on ``Rest()`` in ``rest.py`` to fulfill
+``GET`` and ``POST`` requests.
+
+-  ``accounts.py``:
+-  ``basic()``: Retrieves basic account information
+-  ``full()``: Retrieve full account information
+-  ``balance()``: Get user balance
+-  ``nearby()``: Get nearby users
+-  ``autowithdrawalstatus()``: Get auto-withdrawal status
+-  ``toggleautowithdrawalstatus()``: Toggle auto-withdrawal
+-  ``checkouts.py``:
+-  ``create()``: Creates a checkout session.
+-  ``get()``: Gets status of existing checkout session.
+-  ``complete()``: Completes a checkout session.
+-  ``verify()``: Verifies a checkout session.
+-  ``contacts.py``:
+-  ``get()``: Retrieve a user's contacts.
+-  ``nearby()``: Get spots near a location.
+-  ``fundingsources.py``:
+-  ``info()``: Retrieve information regarding a funding source via ID.
+-  ``get()``: List all funding sources.
+-  ``add()``: Add a funding source.
+-  ``verify()``: Verify a funding source.
+-  ``withdraw()``: Withdraw from Dwolla into funding source.
+-  ``deposit()``: Deposit to Dwolla from funding source.
+-  ``masspay.py``:
+-  ``create()``: Creates a MassPay job.
+-  ``getjob()``: Gets a MassPay job.
+-  ``getjobitems()``: Gets all items for a specific job.
+-  ``getitem()``: Gets an item from a specific job.
+-  ``listjobs()``: Lists all MassPay jobs.
+-  ``oauth.py``:
+-  ``genauthurl()``: Generates OAuth permission link URL
+-  ``get()``: Retrieves OAuth + Refresh token pair from Dwolla servers.
+-  ``refresh()``: Retrieves OAuth + Refresh pair with refresh token.
+-  ``request.py``:
+-  ``create()``: Request money from user.
+-  ``get()``: Lists all pending money requests.
+-  ``info()``: Retrieves info for a pending money request.
+-  ``cancel()``: Cancels a money request.
+-  ``fulfill()``: Fulfills a money request.
+-  ``transactions.py``:
+-  ``send()``: Sends money
+-  ``refund()``: Refunds money
+-  ``get()``: Lists transactions for user
+-  ``info()``: Get information for transaction by ID.
+-  ``stats()``: Get transaction statistics for current user.
+
+Unit Testing
+------------
+
+``dwolla-python`` uses
+`unittest <https://docs.python.org/2/library/unittest.html>`__ for unit
+testing. Integration testing is planned sometime in the future.
+
+To run the tests, install ``dwolla-python`` as per the aforementioned
+instructions and run:
 
 ::
 
-    init_oauth_url(redircet_uri, scope) ==> (string) OAuth permissions page URL
-    get_oauth_token(code)               ==> (string) a never-expiring OAuth access token
-    get_account_info(account_id)        ==> (array) the user entity for {account_id}
-    get_nearby_spots([lat, lon, range, limit])  ==> (array) list of nearby spots matching the search criteria
-    register_user(email, password, pin, firstName, lastName, address, address2, city, state, zip, phone, dateOfBirth[, organization, ein, type, acceptTerms])   ==> (dict) the newly created user record
+    cd location/of/the/library
+    pip install unittest
+    python -m unittest discover tests/
 
-DwollaUser class:
+README
+------
 
-::
-
-    get_balance()                           ==> (string) the Dwolla balance of the account associated with the token
-    get_account_info(account_id)            ==> (dict) the user entity associated with the token
-    get_nearby_users(lat, lon)
-    get_contacts([search, types, limit])    ==> (array) list of contacts matching the search criteria
-
-    get_transaction(transaction_id)         ==> (dict) transaction details
-    get_transaction_list([since, types, limit, skip])       ==> (array) a list of recent transactions matching the search criteria
-    get_transaction_stats([types, start_date, end_date])    ==> (dict) statistics about the account associated with the token
-    send_funds(amount, dest, pin[, notes, assume_cost, facil_amount, dest_type])    ==> (string) transaction ID
-
-    request_funds(amount, source, pin[, notes, facil_amount, source_type])          ==> (string) request ID
-    fulfill_request(request_id, pin[, amount, notes, funds_source, assume_cost])
-    cancel_request(request_id)
-    get_request(request_id)
-    get_pending_requests()
-
-    get_funding_sources()   ==> (array) a list of funding sources associated with the token
-    get_funding_source(id)  ==> (dict) information about the {id} funding source
-    add_funding_source(routing_number, account_number, account_type, account_name)
-    verify_funding_source(source_id, deposit1, deposit2)
-    withdraw(source_id, pin, amount)
-    deposit(source_id, pin, amount)
-
-DwollaGateway class:
-
-::
-
-    set_mode(mode)          ==> (bool) did mode change?
-    start_gateway_session() ==> (bool) did session start?
-    add_gateway_product(name, amount[, desc, qty])              ==> (bool) was product added?
-    verify_gateway_signature(signature, checkout_id, amount)    ==> (bool) is signature valid?
-    get_gateway_URL(destination_id[, order_id, discount, shipping, tax, notes, callback])    ==> (string) checkout URL
+In order for the library's README file to display nicely on PyPi, we
+must use the ``*.rst`` file format. When making changes to this README
+file, please `use this tool <http://johnmacfarlane.net/pandoc/try/>`__
+to convert the ``*.md`` file to ``*.rst``, and make sure to keep both
+files updated.
 
 Changelog
 ---------
 
-1.6.5
+2.0.1 \* Added MANIFEST.in to resolve issues with README failing
+retrieval from PyPi.
 
--  Fixed PyPi issue with README error on install. README on PyPi is of
-   fully compliant RST format and no longer a symlink.
-
-1.6.4
-
--  Updated a payment and request response to use HOST variable instead
-   of hardcoded string (should now work with UAT)
-
-1.6.3
-
--  Fix an issue with the verify\_ssl variable
-
-1.6.2
-
--  Add verify\_webhook\_signature method
-
-1.6.1
-
--  Add the AllowGuestCheckout flag to the offiste gateway
-
-1.6.0
-
--  Add refund API endpoint
-
-1.5.1
-
--  Fixed float(amount) bug - `Pull req`_ by
-   [@anfedorov](https://github.com/anfedorov)
--  Fix timing vulnerability in verify\_gateway\_signature - `Pull
-   req <https://github.com/Dwolla/dwolla-python/pull/3>`__ by
-   [@anfedorov](https://github.com/anfedorov)
--  DwollaGateway.\ **init** shouldn’t require redirect\_uri - `Issue`_
-   by [@anfedorov](https://github.com/anfedorov)
-
-1.5.0
-
--  Add support for Dwolla’s UAT
-
-1.4.9
-
--  Remove PIN requirement on def request()
-
-1.4.8
-
--  Added Guest Checkout flag to get\_gateway\_URL() (Thanks, @pegler)
-
-1.4.7
-
--  Fixed endpoint URLs
-
-1.4.6
-
--  Removed unwanted print statements
-
-1.4.5
-
--  Add support for SSL verification override
-
-1.4.4
-
--  Add support for host override
-
-1.4.3
-
--  Fixed docs for the transaction/listings() delimiter (Thanks,
-   @klobyone)
-
-1.4.2
-
--  Fixed wrong parameter name in add\_funding\_source() (Thanks
-   @Louis11)
--  Fixed typos in example files
-
-1.4.1
-
--  Fix for assume\_cost parameter
-
-1.4
-
--  Implement add\_funding\_source
--  Implement verify\_funding\_source
--  Implement withdraw
--  Implement deposit
--  Implement get\_nearby\_users
--  Implement fulfill\_request
--  Implement cancel\_request
--  Implement get\_request
--  Implement get\_pending\_requests
--  Add example code for fundingSources.py
--  Add example code for request.py
-
-1.3.4
-
--  Verify SSL certificate
+2.0.0 \* Initial release.
 
 Credits
 -------
 
-This wrapper is a forked extension of Thomas Hansen’s ‘dwolla-python’
-module.
+This wrapper is based on `requests <http://docs.python-requests.org/>`__
+for REST capability and uses
+`unittest <https://docs.python.org/2/library/unittest.html>`__ for unit
+testing and `Travis <https://travis-ci.org/>`__ for automagical build
+verification.
+
+Version ``2.x`` initially written by `David
+Stancu <http://davidstancu.me>`__ (david@dwolla.com).
+
+Versions ``1.x``: The old wrapper is a forked extension of Thomas
+Hansen's 'dwolla-python' module.
 
 -  Thomas Hansen <thomas.hansen@gmail.com>
 -  Jordan Bouvier <jbouvier@gmail.com>
@@ -252,27 +317,14 @@ module.
 -  George Sibble <george.sibble@ultapay.com>
 -  Andrey Fedorov <anfedorov@gmail.com>
 
-Support
--------
-
--  Dwolla API <api@dwolla.com>
--  Michael Schonfeld <michael@dwolla.com>
-
-References / Documentation
---------------------------
-
-http://developers.dwolla.com/dev
-
 License
 -------
 
-(The MIT License)
-
-Copyright (c) 2012 Dwolla <michael@dwolla.com>
+Copyright (c) 2014 Dwolla Inc, David Stancu
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
-‘Software’), to deal in the Software without restriction, including
+"Software"), to deal in the Software without restriction, including
 without limitation the rights to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
@@ -281,7 +333,7 @@ the following conditions:
 The above copyright notice and this permission notice shall be included
 in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED ‘AS IS’, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
@@ -289,5 +341,5 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-.. _Pull req: https://github.com/Dwolla/dwolla-python/pull/6
-.. _Issue: https://github.com/Dwolla/dwolla-python/issues/4
+.. |Build Status| image:: https://travis-ci.org/Dwolla/dwolla-python.svg?branch=master
+   :target: https://travis-ci.org/Dwolla/dwolla-python
