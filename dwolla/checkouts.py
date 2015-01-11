@@ -48,10 +48,10 @@ def create(purchaseorder, params=False):
     if params:
         p = dict(p.items() + params.items())
 
-    id = r._post('/offsitegateway/checkouts/', p)
+    id = r._post('/offsitegateway/checkouts', p)
 
-    if 'CheckoutId' in id['Response']:
-        return dict({'URL': ((c.sandbox_host if c.sandbox else c.production_host) + 'payment/checkout/' + id['Response']['CheckoutId'])}.items() + id['Response'].items())
+    if 'CheckoutId' in id:
+        return dict({'URL': ((c.sandbox_host if c.sandbox else c.production_host) + 'payment/checkout/' + id['CheckoutId'])}.items() + id.items())
     else:
         raise Exception('Unable to create checkout due to API error.')
 
